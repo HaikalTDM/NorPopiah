@@ -11,7 +11,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Sparkles,
-  ArrowRight,
 } from "lucide-react";
 import {
   Dialog,
@@ -38,7 +37,7 @@ function getPages(): GuidePage[] {
       icon: BookOpen,
       emoji: "🥮",
       content: (
-        <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+        <div className="space-y-3 text-sm leading-relaxed text-foreground/85">
           <p>
             Modal &amp; Recipe Cost Manager helps you run a more profitable
             food business — with confidence.
@@ -52,7 +51,7 @@ function getPages(): GuidePage[] {
               "Everything works offline — your data stays on your device",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <span className="mt-0.5 shrink-0 text-emerald-400">✓</span>
+                <span className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400">✓</span>
                 <span>{item}</span>
               </li>
             ))}
@@ -66,25 +65,27 @@ function getPages(): GuidePage[] {
       icon: Package,
       emoji: "📦",
       content: (
-        <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+        <div className="space-y-3 text-sm leading-relaxed text-foreground/85">
           <p>Before creating recipes, add every ingredient you purchase.</p>
-          <div className="rounded-lg bg-slate-800/50 border border-white/5 p-3 space-y-1.5 text-xs">
-            <p className="font-medium text-slate-200">For each material:</p>
-            <ul className="space-y-0.5 text-slate-400">
+          <div className="rounded-lg bg-muted/30 dark:bg-slate-800/50 border border-border p-3 space-y-1.5 text-xs">
+            <p className="font-medium text-foreground/90">For each material:</p>
+            <ul className="space-y-0.5 text-muted-foreground">
               <li>• Ingredient name</li>
               <li>• Purchase quantity &amp; unit (kg, g, L, mL, pcs)</li>
               <li>• Purchase price (RM)</li>
-              <li>• Supplier <span className="text-slate-500">(optional)</span></li>
+              <li>• Supplier <span className="text-muted-foreground/50">(optional)</span></li>
             </ul>
           </div>
-          <div className="rounded-lg bg-emerald-500/5 border border-emerald-500/10 p-3">
-            <p className="text-xs text-emerald-400 font-medium mb-1">Example</p>
-            <p className="text-xs text-slate-300">
-              <span className="font-medium text-slate-200">25 kg</span> Flour
-              &nbsp;→&nbsp;
-              <span className="font-medium text-slate-200">RM 75</span>
+          <div className="rounded-lg bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-100 dark:border-emerald-500/10 p-3">
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mb-1">
+              Example
             </p>
-            <p className="text-xs text-emerald-300 mt-1">
+            <p className="text-xs text-foreground/85">
+              <span className="font-medium text-foreground">25 kg</span> Flour
+              &nbsp;→&nbsp;
+              <span className="font-medium text-foreground">RM 75</span>
+            </p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-300 mt-1">
               ↓ Cost per gram is calculated automatically
             </p>
           </div>
@@ -97,20 +98,20 @@ function getPages(): GuidePage[] {
       icon: ChefHat,
       emoji: "🧑‍🍳",
       content: (
-        <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+        <div className="space-y-3 text-sm leading-relaxed text-foreground/85">
           <p>Create a recipe by entering:</p>
-          <ul className="space-y-1 text-xs text-slate-400">
+          <ul className="space-y-1 text-xs text-muted-foreground">
             <li>• Recipe name &amp; batch yield</li>
             <li>• Ingredients and quantities used</li>
             <li>• Packaging cost per batch</li>
             <li>• Labour &amp; utility buffer</li>
             <li>• Target profit margin %</li>
           </ul>
-          <div className="rounded-lg bg-emerald-500/5 border border-emerald-500/10 p-3">
-            <p className="text-xs text-emerald-400 font-medium mb-1">
+          <div className="rounded-lg bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-100 dark:border-emerald-500/10 p-3">
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mb-1">
               Auto-calculated:
             </p>
-            <ul className="space-y-0.5 text-xs text-slate-300">
+            <ul className="space-y-0.5 text-xs text-foreground/85">
               <li>• Ingredient cost breakdown</li>
               <li>• Total production cost</li>
               <li>• Cost per piece</li>
@@ -127,27 +128,29 @@ function getPages(): GuidePage[] {
       icon: Scale,
       emoji: "⚖️",
       content: (
-        <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+        <div className="space-y-3 text-sm leading-relaxed text-foreground/85">
           <p>
             Need to produce more than your standard batch? Use the&nbsp;
-            <span className="text-slate-200 font-medium">Batch Scaler</span>.
+            <span className="text-foreground font-medium">Batch Scaler</span>.
           </p>
-          <div className="rounded-lg bg-slate-800/50 border border-white/5 p-3">
-            <p className="text-xs text-slate-400 mb-2">Example</p>
+          <div className="rounded-lg bg-muted/30 dark:bg-slate-800/50 border border-border p-3">
+            <p className="text-xs text-muted-foreground mb-2">Example</p>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div>
-                <p className="text-slate-500">Original recipe</p>
-                <p className="text-slate-200 font-medium text-lg">20</p>
-                <p className="text-slate-400">brownies</p>
+                <p className="text-muted-foreground/70">Original recipe</p>
+                <p className="text-foreground font-medium text-lg">20</p>
+                <p className="text-muted-foreground">brownies</p>
               </div>
               <div>
-                <p className="text-slate-500">Customer order</p>
-                <p className="text-emerald-400 font-medium text-lg">75</p>
-                <p className="text-slate-400">brownies</p>
+                <p className="text-muted-foreground/70">Customer order</p>
+                <p className="text-emerald-600 dark:text-emerald-400 font-medium text-lg">
+                  75
+                </p>
+                <p className="text-muted-foreground">brownies</p>
               </div>
             </div>
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground">
             Every ingredient quantity is recalculated automatically while
             maintaining the same ratio. No manual math needed.
           </p>
@@ -160,12 +163,12 @@ function getPages(): GuidePage[] {
       icon: BarChart3,
       emoji: "📊",
       content: (
-        <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+        <div className="space-y-3 text-sm leading-relaxed text-foreground/85">
           <p>
-            Visit the <span className="text-slate-200 font-medium">Insights</span> tab to
+            Visit the <span className="text-foreground font-medium">Insights</span> tab to
             compare recipes and spot trends:
           </p>
-          <ul className="space-y-1.5 text-xs text-slate-400">
+          <ul className="space-y-1.5 text-xs text-muted-foreground">
             {[
               "Highest profit margin recipes",
               "Lowest margin items (raise prices?)",
@@ -173,12 +176,12 @@ function getPages(): GuidePage[] {
               "Overall profitability snapshot",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <span className="mt-0.5 shrink-0 text-emerald-400">•</span>
+                <span className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400">•</span>
                 <span>{item}</span>
               </li>
             ))}
           </ul>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground">
             Use these insights to refine pricing and maximize profit over time.
           </p>
         </div>
@@ -190,17 +193,17 @@ function getPages(): GuidePage[] {
       icon: ShieldCheck,
       emoji: "🛡️",
       content: (
-        <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+        <div className="space-y-3 text-sm leading-relaxed text-foreground/85">
           <p>
             All your recipes, ingredients, and calculations are stored locally
             on your device. No cloud required.
           </p>
-          <div className="rounded-lg bg-slate-800/50 border border-white/5 p-3 space-y-2">
+          <div className="rounded-lg bg-muted/30 dark:bg-slate-800/50 border border-border p-3 space-y-2">
             <div className="flex items-start gap-2 text-xs">
               <span className="mt-0.5 shrink-0">📥</span>
               <div>
-                <p className="font-medium text-slate-200">Export backup</p>
-                <p className="text-slate-400">
+                <p className="font-medium text-foreground/90">Export backup</p>
+                <p className="text-muted-foreground">
                   Tap the Download icon in the header to save your data.
                 </p>
               </div>
@@ -208,14 +211,14 @@ function getPages(): GuidePage[] {
             <div className="flex items-start gap-2 text-xs">
               <span className="mt-0.5 shrink-0">📤</span>
               <div>
-                <p className="font-medium text-slate-200">Import backup</p>
-                <p className="text-slate-400">
+                <p className="font-medium text-foreground/90">Import backup</p>
+                <p className="text-muted-foreground">
                   Restore your data or move to another device.
                 </p>
               </div>
             </div>
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground">
             No internet connection is required — backup and import work
             entirely offline.
           </p>
@@ -228,18 +231,27 @@ function getPages(): GuidePage[] {
       icon: Sparkles,
       emoji: "🎉",
       content: (
-        <div className="space-y-3 text-sm leading-relaxed text-slate-300">
-          <p className="text-slate-200 font-medium">
+        <div className="space-y-3 text-sm leading-relaxed text-foreground/85">
+          <p className="text-foreground font-medium">
             Recommended workflow:
           </p>
-          <ol className="space-y-2 text-xs text-slate-400 list-decimal list-inside marker:text-emerald-400">
-            <li>Add your ingredients in <span className="text-slate-300">Materials</span></li>
-            <li>Create your recipes in <span className="text-slate-300">Recipes</span></li>
+          <ol className="space-y-2 text-xs text-muted-foreground list-decimal list-inside marker:text-emerald-600 dark:marker:text-emerald-400">
+            <li>
+              Add your ingredients in{" "}
+              <span className="text-foreground/85">Materials</span>
+            </li>
+            <li>
+              Create your recipes in{" "}
+              <span className="text-foreground/85">Recipes</span>
+            </li>
             <li>Check cost-per-piece &amp; adjust pricing</li>
             <li>Scale up when customers place larger orders</li>
-            <li>Review <span className="text-slate-300">Insights</span> regularly to maximize profitability</li>
+            <li>
+              Review <span className="text-foreground/85">Insights</span>{" "}
+              regularly to maximize profitability
+            </li>
           </ol>
-          <p className="text-xs text-emerald-400 font-medium">
+          <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
             Revisit this guide anytime by tapping the 📖 icon in the header.
           </p>
         </div>
@@ -283,16 +295,14 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
     setCurrentPage(0);
   }, [onOpenChange]);
 
-  // Reset page when dialog opens
   useEffect(() => {
     if (open) setCurrentPage(0);
   }, [open]);
 
-  // Animate page transition
   useEffect(() => {
     if (pageRef.current) {
       pageRef.current.classList.remove("guide-page-enter");
-      void pageRef.current.offsetWidth; // force reflow
+      void pageRef.current.offsetWidth;
       pageRef.current.classList.add("guide-page-enter");
     }
   }, [currentPage]);
@@ -302,15 +312,7 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        className="w-[calc(100%-2rem)] max-w-md border-white/10 p-0 gap-0 sm:max-w-md"
-        style={{
-          background: "rgba(15, 23, 42, 0.95)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-        }}
-      >
-        {/* Hidden title for accessibility */}
+      <DialogContent className="w-[calc(100%-2rem)] max-w-md border-border p-0 gap-0 sm:max-w-md bg-card backdrop-blur-2xl">
         <DialogTitle className="sr-only">
           User Guide — {page.title}
         </DialogTitle>
@@ -318,28 +320,26 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
           {page.description}
         </DialogDescription>
 
-        {/* Content */}
         <div className="flex flex-col" style={{ minHeight: 420 }}>
-          {/* Page body */}
           <div className="flex-1 px-6 pt-6 pb-4">
-            {/* Icon */}
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 ring-1 ring-emerald-500/20">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent ring-1 ring-emerald-500/20">
                 {page.emoji ? (
                   <span className="text-xl">{page.emoji}</span>
                 ) : (
-                  <PageIcon className="size-5 text-emerald-400" />
+                  <PageIcon className="size-5 text-emerald-600 dark:text-emerald-400" />
                 )}
               </div>
               <div>
-                <h2 className="text-base font-semibold text-slate-100">
+                <h2 className="text-base font-semibold text-foreground">
                   {page.title}
                 </h2>
-                <p className="text-xs text-slate-500">{page.description}</p>
+                <p className="text-xs text-muted-foreground/70">
+                  {page.description}
+                </p>
               </div>
             </div>
 
-            {/* Page content with animation */}
             <div
               ref={pageRef}
               className="transition-opacity duration-200 ease-out"
@@ -352,30 +352,27 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
             </div>
           </div>
 
-          {/* Footer: progress + navigation */}
-          <div className="border-t border-white/5 px-6 py-4">
-            {/* Progress dots */}
+          <div className="border-t border-border px-6 py-4">
             <div className="mb-3 flex items-center justify-center gap-1.5">
               {pages.map((_, i) => (
                 <div
                   key={i}
                   className={`h-1 rounded-full transition-all duration-300 ${
                     i === currentPage
-                      ? "w-5 bg-emerald-400"
+                      ? "w-5 bg-emerald-500"
                       : i < currentPage
                         ? "w-1.5 bg-emerald-500/40"
-                        : "w-1.5 bg-white/10"
+                        : "w-1.5 bg-muted"
                   }`}
                 />
               ))}
             </div>
 
-            {/* Navigation buttons */}
             <div className="flex items-center justify-between">
               {currentPage > 0 ? (
                 <button
                   onClick={prev}
-                  className="flex items-center gap-1 rounded-lg px-3 py-2 text-xs font-medium text-slate-400 transition-colors hover:bg-white/5 hover:text-slate-200 active:scale-[0.98]"
+                  className="flex items-center gap-1 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground active:scale-[0.98]"
                 >
                   <ChevronLeft className="size-3.5" />
                   Prev
@@ -383,20 +380,20 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
               ) : (
                 <button
                   onClick={handleSkip}
-                  className="rounded-lg px-3 py-2 text-xs font-medium text-slate-500 transition-colors hover:bg-white/5 hover:text-slate-400 active:scale-[0.98]"
+                  className="rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground/70 transition-colors hover:bg-muted/50 hover:text-muted-foreground active:scale-[0.98]"
                 >
                   Skip
                 </button>
               )}
 
-              <span className="text-[10px] text-slate-600 tabular-nums">
+              <span className="text-[10px] text-muted-foreground/50 tabular-nums">
                 {currentPage + 1} / {totalPages}
               </span>
 
               {isLastPage ? (
                 <button
                   onClick={handleFinish}
-                  className="flex items-center gap-1 rounded-lg bg-emerald-500/20 px-4 py-2 text-xs font-medium text-emerald-300 transition-colors hover:bg-emerald-500/30 active:scale-[0.98]"
+                  className="flex items-center gap-1 rounded-lg bg-emerald-100 px-4 py-2 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-200 active:scale-[0.98] dark:bg-emerald-500/20 dark:text-emerald-300 dark:hover:bg-emerald-500/30"
                 >
                   <Sparkles className="size-3.5" />
                   Start Using App
@@ -404,7 +401,7 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
               ) : (
                 <button
                   onClick={next}
-                  className="flex items-center gap-1 rounded-lg bg-white/5 px-4 py-2 text-xs font-medium text-slate-200 transition-colors hover:bg-white/10 active:scale-[0.98]"
+                  className="flex items-center gap-1 rounded-lg bg-muted/40 px-4 py-2 text-xs font-medium text-foreground/90 transition-colors hover:bg-muted/60 active:scale-[0.98] dark:bg-white/5 dark:hover:bg-white/10"
                 >
                   Next
                   <ChevronRight className="size-3.5" />

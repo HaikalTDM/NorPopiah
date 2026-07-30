@@ -61,11 +61,11 @@ export function BatchScalerTab() {
 
   return (
     <div className="space-y-4">
-      <Card className="mx-auto border-white/10 bg-white/5 backdrop-blur-lg sm:max-w-xl">
+      <Card className="mx-auto border-border bg-muted/40 backdrop-blur-lg dark:bg-white/5 sm:max-w-xl">
         <CardContent className="space-y-4 p-4 sm:p-6">
           {/* Recipe selector */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">
+            <label className="mb-2 block text-sm font-medium text-foreground/85">
               Select Recipe
             </label>
             <Select
@@ -74,10 +74,10 @@ export function BatchScalerTab() {
                 setResult(null);
               }}
             >
-              <SelectTrigger className="border-white/10 bg-white/5 text-slate-100">
+              <SelectTrigger className="border-border bg-muted/40 text-foreground dark:bg-white/5">
                 <SelectValue placeholder="Choose a recipe..." />
               </SelectTrigger>
-              <SelectContent className="border-white/10 bg-slate-900">
+              <SelectContent className="border-border bg-card">
                 {(recipes ?? []).map((r) => (
                   <SelectItem key={r.id} value={String(r.id)}>
                     {r.name} ({r.batch_yield_pcs} pcs/batch)
@@ -91,7 +91,7 @@ export function BatchScalerTab() {
             <>
               {/* Target quantity */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-foreground/85">
                   Order Quantity (pieces)
                 </label>
                 <div className="flex gap-2">
@@ -102,7 +102,7 @@ export function BatchScalerTab() {
                     onChange={(e) =>
                       setTargetPieces(parseInt(e.target.value) || 1)
                     }
-                    className="border-white/10 bg-white/5 text-slate-100"
+                    className="border-border bg-muted/40 text-foreground dark:bg-white/5"
                   />
                 </div>
               </div>
@@ -113,10 +113,10 @@ export function BatchScalerTab() {
                   <Badge
                     key={n}
                     variant="outline"
-                    className={`cursor-pointer border-white/10 px-2.5 py-1 text-xs transition-colors hover:bg-white/10 ${
+                    className={`cursor-pointer border-border px-2.5 py-1 text-xs transition-colors hover:bg-white/10 ${
                       targetPieces === n
-                        ? "bg-indigo-500/20 text-indigo-300"
-                        : "text-slate-400"
+                        ? "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300"
+                        : "text-muted-foreground"
                     }`}
                     onClick={() => {
                       setTargetPieces(n);
@@ -142,9 +142,9 @@ export function BatchScalerTab() {
 
       {/* Results */}
       {result && (
-        <Card className="border-emerald-500/20 bg-white/5 backdrop-blur-lg">
+        <Card className="border-emerald-100 bg-muted/40 backdrop-blur-lg dark:border-emerald-500/20 dark:bg-white/5">
           <CardContent className="space-y-3 p-4">
-            <div className="flex items-center gap-2 text-sm text-slate-400">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Scale className="size-4" />
               <span>
                 {targetPieces} pieces = {result.scaleFactor.toFixed(1)}× batch
@@ -153,27 +153,27 @@ export function BatchScalerTab() {
             </div>
 
             <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-              <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-                <p className="text-xs text-slate-400">Cost / piece</p>
-                <p className="text-lg font-semibold text-slate-200">
+              <div className="rounded-lg border border-border bg-muted/40 p-3 dark:bg-white/5">
+                <p className="text-xs text-muted-foreground">Cost / piece</p>
+                <p className="text-lg font-semibold text-foreground/90">
                   {formatCurrency(result.costPerPiece)}
                 </p>
               </div>
-              <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-                <p className="text-xs text-slate-400">Price / piece</p>
-                <p className="text-lg font-semibold text-emerald-400">
+              <div className="rounded-lg border border-border bg-muted/40 p-3 dark:bg-white/5">
+                <p className="text-xs text-muted-foreground">Price / piece</p>
+                <p className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">
                   {formatCurrency(result.pricePerPiece)}
                 </p>
               </div>
-              <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3">
-                <p className="text-xs text-slate-400">Total Revenue</p>
-                <p className="text-lg font-bold text-emerald-400">
+              <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-3 dark:border-emerald-500/20 dark:bg-emerald-500/5">
+                <p className="text-xs text-muted-foreground">Total Revenue</p>
+                <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
                   {formatCurrency(result.totalRevenue)}
                 </p>
               </div>
-              <div className="rounded-lg border border-indigo-500/20 bg-indigo-500/5 p-3">
-                <p className="text-xs text-slate-400">Total Profit</p>
-                <p className="text-lg font-bold text-indigo-400">
+              <div className="rounded-lg border border-indigo-100 bg-indigo-50 p-3 dark:border-indigo-500/20 dark:bg-indigo-500/5">
+                <p className="text-xs text-muted-foreground">Total Profit</p>
+                <p className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
                   {formatCurrency(result.totalProfit)}
                 </p>
               </div>
@@ -183,8 +183,8 @@ export function BatchScalerTab() {
       )}
 
       {!recipes?.length && (
-        <Card className="border-white/10 bg-white/5 backdrop-blur-lg">
-          <CardContent className="py-12 text-center text-slate-400">
+        <Card className="border-border bg-muted/40 backdrop-blur-lg dark:bg-white/5">
+          <CardContent className="py-12 text-center text-muted-foreground">
             Create recipes first to use the batch scaler.
           </CardContent>
         </Card>

@@ -120,12 +120,12 @@ export function MaterialsTab() {
       {/* Header */}
       <div className="flex items-center gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search ingredients..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border-white/10 bg-white/5 pl-9 text-slate-100 placeholder:text-slate-500"
+            className="border-border bg-muted/30 dark:bg-white/5 pl-9 text-foreground placeholder:text-muted-foreground/60"
           />
         </div>
         <Button onClick={openAdd} size="icon" className="shrink-0 bg-emerald-600 hover:bg-emerald-700">
@@ -135,9 +135,9 @@ export function MaterialsTab() {
 
       {/* List */}
       {filtered.length === 0 ? (
-        <Card className="border-white/10 bg-white/5 backdrop-blur-lg">
+        <Card className="border-border bg-card backdrop-blur-lg">
           <CardContent className="py-12 text-center">
-            <p className="text-slate-400">
+            <p className="text-muted-foreground">
               {ingredients?.length
                 ? "No matching ingredients"
                 : "No ingredients yet. Add your first one!"}
@@ -149,27 +149,27 @@ export function MaterialsTab() {
           {filtered.map((ingredient) => (
             <Card
               key={ingredient.id}
-              className="border-white/10 bg-white/5 backdrop-blur-lg transition-colors hover:bg-white/[0.07]"
+              className="border-border bg-card backdrop-blur-lg transition-colors hover:bg-muted/50 dark:hover:bg-white/[0.07]"
             >
               <CardContent className="flex items-center justify-between p-4">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="truncate font-medium text-slate-100">
+                    <p className="truncate font-medium text-foreground">
                       {ingredient.name}
                     </p>
                     <Badge
                       variant="outline"
-                      className="shrink-0 border-emerald-500/30 text-emerald-400"
+                      className="shrink-0 border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
                     >
                       {ingredient.unit}
                     </Badge>
                   </div>
-                  <div className="mt-1 flex items-center gap-3 text-sm text-slate-400">
+                  <div className="mt-1 flex items-center gap-3 text-sm text-muted-foreground">
                     <span>
                       {formatCurrency(ingredient.purchase_price)} /{" "}
                       {ingredient.purchase_qty} {ingredient.unit}
                     </span>
-                    <span className="text-emerald-400">
+                    <span className="text-emerald-600 dark:text-emerald-400">
                       {formatCurrency(getCostPerUnit(ingredient))}/{ingredient.unit}
                     </span>
                   </div>
@@ -179,7 +179,7 @@ export function MaterialsTab() {
                     variant="ghost"
                     size="icon"
                     onClick={() => openEdit(ingredient)}
-                    className="text-slate-400 hover:text-slate-100"
+                    className="text-muted-foreground hover:text-foreground"
                   >
                     <Pencil className="size-3.5" />
                   </Button>
@@ -189,7 +189,7 @@ export function MaterialsTab() {
                     onClick={() =>
                       ingredient.id && handleDelete(ingredient.id, ingredient.name)
                     }
-                    className="text-slate-400 hover:text-red-400"
+                    className="text-muted-foreground hover:text-red-400"
                   >
                     <Trash2 className="size-3.5" />
                   </Button>
@@ -202,35 +202,35 @@ export function MaterialsTab() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="border-white/10 bg-slate-900/95 backdrop-blur-xl sm:max-w-md">
+        <DialogContent className="border-border bg-card backdrop-blur-xl sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-slate-100">
+            <DialogTitle className="text-foreground">
               {editing ? "Edit Ingredient" : "Add Ingredient"}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label className="text-slate-300">Name</Label>
+              <Label className="text-foreground/85">Name</Label>
               <Input
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="e.g. Tepung Gandum"
-                className="border-white/10 bg-white/5 text-slate-100"
+                className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label className="text-slate-300">Unit</Label>
+                <Label className="text-foreground/85">Unit</Label>
                 <Select
                   value={form.unit}
                   onValueChange={(v) =>
                     setForm({ ...form, unit: v as Ingredient["unit"] })
                   }
                 >
-                  <SelectTrigger className="border-white/10 bg-white/5 text-slate-100">
+                  <SelectTrigger className="border-border bg-muted/30 dark:bg-white/5 text-foreground">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="border-white/10 bg-slate-900">
+                  <SelectContent className="border-border bg-card">
                     {UNITS.map((u) => (
                       <SelectItem key={u} value={u}>
                         {u}
@@ -240,7 +240,7 @@ export function MaterialsTab() {
                 </Select>
               </div>
               <div>
-                <Label className="text-slate-300">Purchase Qty</Label>
+                <Label className="text-foreground/85">Purchase Qty</Label>
                 <Input
                   type="number"
                   step="0.01"
@@ -252,12 +252,12 @@ export function MaterialsTab() {
                       purchase_qty: parseFloat(e.target.value) || 0,
                     })
                   }
-                  className="border-white/10 bg-white/5 text-slate-100"
+                  className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                 />
               </div>
             </div>
             <div>
-              <Label className="text-slate-300">Purchase Price (RM)</Label>
+              <Label className="text-foreground/85">Purchase Price (RM)</Label>
               <Input
                 type="number"
                 step="0.01"
@@ -269,18 +269,18 @@ export function MaterialsTab() {
                     purchase_price: parseFloat(e.target.value) || 0,
                   })
                 }
-                className="border-white/10 bg-white/5 text-slate-100"
+                className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
               />
             </div>
             <div>
-              <Label className="text-slate-300">Supplier (optional)</Label>
+              <Label className="text-foreground/85">Supplier (optional)</Label>
               <Input
                 value={form.supplier}
                 onChange={(e) =>
                   setForm({ ...form, supplier: e.target.value })
                 }
                 placeholder="e.g. Pasar Borong Selayang"
-                className="border-white/10 bg-white/5 text-slate-100"
+                className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
               />
             </div>
             <Button

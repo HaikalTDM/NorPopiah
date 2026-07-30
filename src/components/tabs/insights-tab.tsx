@@ -33,8 +33,8 @@ export function InsightsTab() {
 
   if (margins.length === 0) {
     return (
-      <Card className="border-white/10 bg-white/5 backdrop-blur-lg">
-        <CardContent className="py-12 text-center text-slate-400">
+      <Card className="border-border bg-card backdrop-blur-lg">
+        <CardContent className="py-12 text-center text-muted-foreground">
           Add recipes to see margin insights.
         </CardContent>
       </Card>
@@ -50,29 +50,29 @@ export function InsightsTab() {
     <div className="space-y-4">
       {/* Summary cards */}
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
-        <Card className="border-emerald-500/20 bg-emerald-500/5 backdrop-blur-lg">
+        <Card className="border-emerald-100 bg-emerald-50 backdrop-blur-lg dark:border-emerald-500/20 dark:bg-emerald-500/5">
           <CardContent className="p-3 text-center">
-            <TrendingUp className="mx-auto mb-1 size-4 text-emerald-400" />
-            <p className="text-xs text-slate-400">Highest Margin</p>
-            <p className="text-sm font-semibold text-emerald-400">
+            <TrendingUp className="mx-auto mb-1 size-4 text-emerald-600 dark:text-emerald-400" />
+            <p className="text-xs text-muted-foreground">Highest Margin</p>
+            <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
               {formatCurrency(highestMargin?.margin ?? 0)}
             </p>
           </CardContent>
         </Card>
-        <Card className="border-white/10 bg-white/5 backdrop-blur-lg">
+        <Card className="border-border bg-card backdrop-blur-lg">
           <CardContent className="p-3 text-center">
-            <DollarSign className="mx-auto mb-1 size-4 text-slate-400" />
-            <p className="text-xs text-slate-400">Avg Margin</p>
-            <p className="text-sm font-semibold text-slate-200">
+            <DollarSign className="mx-auto mb-1 size-4 text-muted-foreground" />
+            <p className="text-xs text-muted-foreground">Avg Margin</p>
+            <p className="text-sm font-semibold text-foreground/90">
               {formatCurrency(avgMargin)}
             </p>
           </CardContent>
         </Card>
-        <Card className="border-red-500/20 bg-red-500/5 backdrop-blur-lg">
+        <Card className="border-red-100 bg-red-50 backdrop-blur-lg dark:border-red-500/20 dark:bg-red-500/5">
           <CardContent className="p-3 text-center">
-            <TrendingDown className="mx-auto mb-1 size-4 text-red-400" />
-            <p className="text-xs text-slate-400">Lowest Margin</p>
-            <p className="text-sm font-semibold text-red-400">
+            <TrendingDown className="mx-auto mb-1 size-4 text-red-500" />
+            <p className="text-xs text-muted-foreground">Lowest Margin</p>
+            <p className="text-sm font-semibold text-red-500">
               {formatCurrency(lowestMargin?.margin ?? 0)}
             </p>
           </CardContent>
@@ -80,14 +80,14 @@ export function InsightsTab() {
       </div>
 
       {/* Margin leaderboard */}
-      <Card className="border-white/10 bg-white/5 backdrop-blur-lg">
+      <Card className="border-border bg-card backdrop-blur-lg">
         <CardContent className="p-0">
-          <div className="border-b border-white/10 px-4 py-3">
-            <h3 className="text-sm font-medium text-slate-300">
+          <div className="border-b border-border px-4 py-3">
+            <h3 className="text-sm font-medium text-foreground/85">
               Margin Leaderboard
             </h3>
           </div>
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-border">
             {margins.map((item, idx) => (
               <div
                 key={item.id}
@@ -97,21 +97,21 @@ export function InsightsTab() {
                   <span
                     className={`flex size-6 items-center justify-center rounded-full text-xs font-bold ${
                       idx === 0
-                        ? "bg-amber-500/20 text-amber-400"
+                        ? "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400"
                         : idx === 1
-                          ? "bg-slate-400/20 text-slate-400"
+                          ? "bg-slate-100 text-slate-600 dark:bg-slate-400/20 dark:text-slate-400"
                           : idx === 2
-                            ? "bg-orange-600/20 text-orange-400"
-                            : "bg-white/5 text-slate-500"
+                            ? "bg-orange-100 text-orange-700 dark:bg-orange-600/20 dark:text-orange-400"
+                            : "bg-muted/30 text-muted-foreground"
                     }`}
                   >
                     {idx + 1}
                   </span>
                   <div>
-                    <p className="text-sm font-medium text-slate-200">
+                    <p className="text-sm font-medium text-foreground/90">
                       {item.name}
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-muted-foreground/70">
                       Cost: {formatCurrency(item.cost)} · Price:{" "}
                       {formatCurrency(item.price)}
                     </p>
@@ -120,8 +120,8 @@ export function InsightsTab() {
                 <Badge
                   className={
                     item.margin > avgMargin
-                      ? "bg-emerald-500/20 text-emerald-400"
-                      : "bg-slate-500/20 text-slate-400"
+                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400"
+                      : "bg-muted/30 text-muted-foreground"
                   }
                 >
                   +{formatCurrency(item.margin)}/pc

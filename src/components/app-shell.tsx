@@ -9,7 +9,10 @@ import {
   Download,
   Upload,
   BookOpen,
+  Sun,
+  Moon,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MaterialsTab } from "./tabs/materials-tab";
@@ -28,11 +31,11 @@ const TABS = [
   { id: "insights", label: "Insights", icon: BarChart3 },
 ];
 
-const INSTALL_TOAST_DELAY = 2500; // ms before showing install prompt
+const INSTALL_TOAST_DELAY = 2500;
 const INSTALL_TOAST_ID = "pwa-install-prompt";
 
 function isPwaInstalled(): boolean {
-  if (typeof window === "undefined") return true; // SSR: skip
+  if (typeof window === "undefined") return true;
   return window.matchMedia("(display-mode: standalone)").matches;
 }
 
@@ -41,6 +44,7 @@ export function AppShell() {
   const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
   const shownToastRef = useRef(false);
   const [guideOpen, setGuideOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   // Auto-open guide for first-time users
   useEffect(() => {
@@ -50,6 +54,8 @@ export function AppShell() {
     }
   }, []);
 
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+
   const handleInstallClick = useCallback(async () => {
     const prompt = deferredPromptRef.current;
     if (!prompt) return;
@@ -58,14 +64,7 @@ export function AppShell() {
     deferredPromptRef.current = null;
     toast.dismiss(INSTALL_TOAST_ID);
     if (result.outcome === "accepted") {
-      toast.success("App installed! Launch from your home screen.", {
-        style: {
-          background: "rgba(15, 23, 42, 0.95)",
-          color: "#e2e8f0",
-          border: "1px solid rgba(52, 211, 153, 0.3)",
-          backdropFilter: "blur(12px)",
-        },
-      });
+      toast.success("App installed! Launch from your home screen.");
     }
   }, []);
 
@@ -81,29 +80,22 @@ export function AppShell() {
 
     toast.custom(
       () => (
-        <div
-          className="pointer-events-auto w-full max-w-sm rounded-xl border border-white/10 p-4 shadow-2xl"
-          style={{
-            background: "rgba(15, 23, 42, 0.92)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-          }}
-        >
-          <p className="text-sm font-semibold text-slate-100">Install App</p>
-          <p className="mt-1 text-xs leading-relaxed text-slate-400">
+        <div className="pointer-events-auto w-full max-w-sm rounded-xl border border-border p-4 shadow-2xl backdrop-blur-xl bg-card">
+          <p className="text-sm font-semibold text-foreground">Install App</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
             Install Modal &amp; Recipe Cost Manager for faster access and full
             offline support.
           </p>
           <div className="mt-3 flex items-center gap-2">
             <button
               onClick={handleInstallClick}
-              className="flex-1 rounded-lg bg-emerald-500/20 px-3 py-2 text-xs font-medium text-emerald-300 transition-colors hover:bg-emerald-500/30 active:scale-[0.98]"
+              className="flex-1 rounded-lg bg-emerald-500/20 px-3 py-2 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/30 active:scale-[0.98]"
             >
               Install
             </button>
             <button
               onClick={handleInstallLater}
-              className="flex-1 rounded-lg bg-white/5 px-3 py-2 text-xs font-medium text-slate-400 transition-colors hover:bg-white/10 active:scale-[0.98]"
+              className="flex-1 rounded-lg bg-muted/30 px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/50 active:scale-[0.98]"
             >
               Later
             </button>
@@ -123,19 +115,12 @@ export function AppShell() {
     const handler = (e: Event) => {
       e.preventDefault();
       deferredPromptRef.current = e as BeforeInstallPromptEvent;
-
-      // Show toast after delay
-      setTimeout(() => {
-        showInstallToast();
-      }, INSTALL_TOAST_DELAY);
+      setTimeout(() => showInstallToast(), INSTALL_TOAST_DELAY);
     };
-
     window.addEventListener("beforeinstallprompt", handler);
-
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js");
     }
-
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
       toast.dismiss(INSTALL_TOAST_ID);
@@ -170,32 +155,40 @@ export function AppShell() {
   };
 
   return (
-    <div className="min-h-dvh bg-slate-950 text-slate-100">
+    <div className="min-h-dvh bg-background text-foreground">
       <Toaster
         position="bottom-center"
         toastOptions={{
-          style: {
-            background: "rgba(15, 23, 42, 0.9)",
-            color: "#e2e8f0",
-            border: "1px solid rgba(148, 163, 184, 0.2)",
-            backdropFilter: "blur(12px)",
-          },
+          className: "glass-card",
+          style: { color: "var(--foreground)" },
         }}
       />
 
-      {/* Header — responsive: mobile compact, tablet+ spacious */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-lg">
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-lg">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
             <span className="text-xl sm:text-2xl">🥮</span>
-            <h1 className="text-lg font-semibold tracking-tight sm:text-xl">
+            <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
               NorPopiah
             </h1>
-            <span className="hidden text-xs text-slate-500 md:inline">
+            <span className="hidden text-xs text-muted-foreground md:inline">
               Modal &amp; Recipe Cost Manager
             </span>
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {theme === "dark" ? (
+                <Sun className="size-4 sm:size-5" />
+              ) : (
+                <Moon className="size-4 sm:size-5" />
+              )}
+            </Button>
             <Button
               variant="ghost"
               size="icon"
@@ -204,24 +197,38 @@ export function AppShell() {
             >
               <BookOpen className="size-4 sm:size-5" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleExport} title="Export backup">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleExport}
+              title="Export backup"
+            >
               <Download className="size-4 sm:size-5" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleImport} title="Import backup">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleImport}
+              title="Import backup"
+            >
               <Upload className="size-4 sm:size-5" />
             </Button>
           </div>
         </div>
       </header>
 
-      {/* Tabs — responsive: mobile icons-only, tablet+ full labels */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
-        <TabsList className="grid w-full grid-cols-4 bg-white/5 backdrop-blur-sm">
+      {/* Tabs */}
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8"
+      >
+        <TabsList className="grid w-full grid-cols-4 bg-muted/30 backdrop-blur-sm">
           {TABS.map((tab) => (
             <TabsTrigger
               key={tab.id}
               value={tab.id}
-              className="flex items-center justify-center gap-1.5 text-xs data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-300 sm:text-sm"
+              className="flex items-center justify-center gap-1.5 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground sm:text-sm"
             >
               <tab.icon className="size-3.5 sm:size-4" />
               <span className="hidden sm:inline">{tab.label}</span>
@@ -230,10 +237,18 @@ export function AppShell() {
         </TabsList>
 
         <div className="mt-4 pb-20 sm:mt-6">
-          <TabsContent value="materials"><MaterialsTab /></TabsContent>
-          <TabsContent value="recipes"><RecipesTab /></TabsContent>
-          <TabsContent value="scaler"><BatchScalerTab /></TabsContent>
-          <TabsContent value="insights"><InsightsTab /></TabsContent>
+          <TabsContent value="materials">
+            <MaterialsTab />
+          </TabsContent>
+          <TabsContent value="recipes">
+            <RecipesTab />
+          </TabsContent>
+          <TabsContent value="scaler">
+            <BatchScalerTab />
+          </TabsContent>
+          <TabsContent value="insights">
+            <InsightsTab />
+          </TabsContent>
         </div>
       </Tabs>
 

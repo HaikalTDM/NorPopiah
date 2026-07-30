@@ -198,7 +198,7 @@ export function RecipesTab() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-slate-400">
+        <h2 className="text-sm font-medium text-muted-foreground">
           {recipes?.length ?? 0} recipes
         </h2>
         <Button
@@ -212,8 +212,8 @@ export function RecipesTab() {
       </div>
 
       {!recipes?.length ? (
-        <Card className="border-white/10 bg-white/5 backdrop-blur-lg">
-          <CardContent className="py-12 text-center text-slate-400">
+        <Card className="border-border bg-muted/40 dark:bg-white/5 backdrop-blur-lg">
+          <CardContent className="py-12 text-center text-muted-foreground">
             No recipes yet. Create your first one!
           </CardContent>
         </Card>
@@ -227,7 +227,7 @@ export function RecipesTab() {
             return (
               <Card
                 key={recipe.id}
-                className="border-white/10 bg-white/5 backdrop-blur-lg"
+                className="border-border bg-muted/40 dark:bg-white/5 backdrop-blur-lg"
               >
                 <button
                   onClick={() => recipe.id && toggleExpand(recipe.id)}
@@ -235,17 +235,17 @@ export function RecipesTab() {
                 >
                   <CardContent className="flex items-center justify-between p-4 text-left">
                     <div className="min-w-0 flex-1">
-                      <p className="font-medium text-slate-100">
+                      <p className="font-medium text-foreground">
                         {recipe.name}
                       </p>
-                      <p className="text-sm text-slate-400">
+                      <p className="text-sm text-muted-foreground">
                         Yield: {recipe.batch_yield_pcs} pcs · Margin:{" "}
                         {recipe.target_margin_percent}%
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
                       {cost && !isExpanded && (
-                        <Badge className="bg-emerald-500/20 text-emerald-400">
+                        <Badge className="bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
                           {formatCurrency(cost.suggested_price)}/pc
                         </Badge>
                       )}
@@ -256,7 +256,7 @@ export function RecipesTab() {
                           e.stopPropagation();
                           openEdit(recipe);
                         }}
-                        className="text-slate-400 hover:text-slate-100"
+                        className="text-muted-foreground hover:text-foreground"
                       >
                         <Pencil className="size-3.5" />
                       </Button>
@@ -267,26 +267,26 @@ export function RecipesTab() {
                           e.stopPropagation();
                           handleDelete(recipe.id!, recipe.name);
                         }}
-                        className="text-slate-400 hover:text-red-400"
+                        className="text-muted-foreground hover:text-red-400"
                       >
                         <Trash2 className="size-3.5" />
                       </Button>
                       {isExpanded ? (
-                        <ChevronUp className="size-4 text-slate-400" />
+                        <ChevronUp className="size-4 text-muted-foreground" />
                       ) : (
-                        <ChevronDown className="size-4 text-slate-400" />
+                        <ChevronDown className="size-4 text-muted-foreground" />
                       )}
                     </div>
                   </CardContent>
                 </button>
 
                 {isExpanded && cost && (
-                  <div className="border-t border-white/5 px-4 pb-4 pt-2">
+                  <div className="border-t border-border/50 px-4 pb-4 pt-2">
                     <div className="space-y-1 text-sm">
                       {cost.ingredientCosts.map((ic, i) => (
                         <div
                           key={i}
-                          className="flex justify-between text-slate-400"
+                          className="flex justify-between text-muted-foreground"
                         >
                           <span>
                             {ic.name} ({ic.qty_used} {ic.unit})
@@ -294,33 +294,33 @@ export function RecipesTab() {
                           <span>{formatCurrency(ic.total_cost)}</span>
                         </div>
                       ))}
-                      <div className="flex justify-between border-t border-white/10 pt-1 text-slate-300">
+                      <div className="flex justify-between border-t border-border pt-1 text-foreground/85">
                         <span>Ingredients</span>
                         <span>
                           {formatCurrency(cost.total_ingredient_cost)}
                         </span>
                       </div>
-                      <div className="flex justify-between text-slate-400">
+                      <div className="flex justify-between text-muted-foreground">
                         <span>Packaging</span>
                         <span>
                           {formatCurrency(cost.packaging_per_piece)}/pc
                         </span>
                       </div>
-                      <div className="flex justify-between text-slate-400">
+                      <div className="flex justify-between text-muted-foreground">
                         <span>Labor</span>
                         <span>{formatCurrency(cost.labor_per_piece)}/pc</span>
                       </div>
-                      <div className="flex justify-between font-medium text-slate-100">
+                      <div className="flex justify-between font-medium text-foreground">
                         <span>Total Cost</span>
                         <span>
                           {formatCurrency(cost.total_cost_per_piece)}/pc
                         </span>
                       </div>
-                      <div className="flex justify-between font-semibold text-emerald-400">
+                      <div className="flex justify-between font-semibold text-emerald-600 dark:text-emerald-400">
                         <span>Suggested Price</span>
                         <span>{formatCurrency(cost.suggested_price)}/pc</span>
                       </div>
-                      <div className="flex justify-between text-indigo-400">
+                      <div className="flex justify-between text-indigo-600 dark:text-indigo-400">
                         <span>Margin</span>
                         <span>
                           {formatCurrency(cost.margin_per_piece)}/pc (
@@ -338,9 +338,9 @@ export function RecipesTab() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto border-white/10 bg-slate-900/95 backdrop-blur-xl sm:max-w-lg">
+        <DialogContent className="max-h-[85vh] overflow-y-auto border-border bg-card backdrop-blur-xl sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle className="text-slate-100">
+            <DialogTitle className="text-foreground">
               {editing ? "Edit Recipe" : "New Recipe"}
             </DialogTitle>
           </DialogHeader>
@@ -348,19 +348,19 @@ export function RecipesTab() {
           {step === 1 ? (
             <div className="space-y-4">
               <div>
-                <Label className="text-slate-300">Recipe Name</Label>
+                <Label className="text-foreground/85">Recipe Name</Label>
                 <Input
                   value={form.name}
                   onChange={(e) =>
                     setForm({ ...form, name: e.target.value })
                   }
                   placeholder="e.g. Popiah Basah"
-                  className="border-white/10 bg-white/5 text-slate-100"
+                  className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-slate-300">Batch Yield (pcs)</Label>
+                  <Label className="text-foreground/85">Batch Yield (pcs)</Label>
                   <Input
                     type="number"
                     min="1"
@@ -371,11 +371,11 @@ export function RecipesTab() {
                         batch_yield_pcs: parseInt(e.target.value) || 0,
                       })
                     }
-                    className="border-white/10 bg-white/5 text-slate-100"
+                    className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                   />
                 </div>
                 <div>
-                  <Label className="text-slate-300">Waste (%)</Label>
+                  <Label className="text-foreground/85">Waste (%)</Label>
                   <Input
                     type="number"
                     min="0"
@@ -387,13 +387,13 @@ export function RecipesTab() {
                         waste_percentage: parseFloat(e.target.value) || 0,
                       })
                     }
-                    className="border-white/10 bg-white/5 text-slate-100"
+                    className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-slate-300">
+                  <Label className="text-foreground/85">
                     Packaging Cost (RM/batch)
                   </Label>
                   <Input
@@ -407,11 +407,11 @@ export function RecipesTab() {
                         packaging_cost: parseFloat(e.target.value) || 0,
                       })
                     }
-                    className="border-white/10 bg-white/5 text-slate-100"
+                    className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                   />
                 </div>
                 <div>
-                  <Label className="text-slate-300">
+                  <Label className="text-foreground/85">
                     Labor Buffer (RM/batch)
                   </Label>
                   <Input
@@ -425,12 +425,12 @@ export function RecipesTab() {
                         labor_buffer: parseFloat(e.target.value) || 0,
                       })
                     }
-                    className="border-white/10 bg-white/5 text-slate-100"
+                    className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                   />
                 </div>
               </div>
               <div>
-                <Label className="text-slate-300">
+                <Label className="text-foreground/85">
                   Target Margin: {form.target_margin_percent}%
                 </Label>
                 <Input
@@ -457,14 +457,14 @@ export function RecipesTab() {
           ) : (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-medium text-slate-200">Ingredients</h3>
+                <h3 className="font-medium text-foreground/90">Ingredients</h3>
                 <Select
                   onValueChange={(v) => addIngredientToForm(parseInt(v))}
                 >
-                  <SelectTrigger className="w-[180px] border-white/10 bg-white/5 text-slate-100">
+                  <SelectTrigger className="w-[180px] border-border bg-muted/30 dark:bg-white/5 text-foreground">
                     <SelectValue placeholder="+ Add ingredient" />
                   </SelectTrigger>
-                  <SelectContent className="border-white/10 bg-slate-900">
+                  <SelectContent className="border-border bg-card">
                     {(ingredients ?? [])
                       .filter(
                         (i) =>
@@ -482,7 +482,7 @@ export function RecipesTab() {
               </div>
 
               {recipeItems.length === 0 ? (
-                <p className="py-4 text-center text-sm text-slate-500">
+                <p className="py-4 text-center text-sm text-muted-foreground/70">
                   Select ingredients from the dropdown above
                 </p>
               ) : (
@@ -490,9 +490,9 @@ export function RecipesTab() {
                   {recipeItems.map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 p-3"
+                      className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 dark:bg-white/5 p-3"
                     >
-                      <span className="flex-1 text-sm text-slate-200">
+                      <span className="flex-1 text-sm text-foreground/90">
                         {getIngredientName(item.ingredient_id)}
                       </span>
                       <Input
@@ -503,11 +503,11 @@ export function RecipesTab() {
                         onChange={(e) =>
                           updateItemQty(idx, parseFloat(e.target.value) || 0)
                         }
-                        className="w-20 border-white/10 bg-white/5 text-right text-sm text-slate-100"
+                        className="w-20 border-border bg-muted/30 dark:bg-white/5 text-right text-sm text-foreground"
                       />
                       <Badge
                         variant="outline"
-                        className="border-white/10 text-slate-400"
+                        className="border-border text-muted-foreground"
                       >
                         {getIngredientUnit(item.ingredient_id)}
                       </Badge>
@@ -515,7 +515,7 @@ export function RecipesTab() {
                         variant="ghost"
                         size="icon"
                         onClick={() => removeItemFromForm(idx)}
-                        className="text-slate-400 hover:text-red-400"
+                        className="text-muted-foreground hover:text-red-400"
                       >
                         <Trash2 className="size-3.5" />
                       </Button>
@@ -528,7 +528,7 @@ export function RecipesTab() {
                 <Button
                   variant="outline"
                   onClick={() => setStep(1)}
-                  className="flex-1 border-white/10 text-slate-300"
+                  className="flex-1 border-border text-foreground/85"
                 >
                   Back
                 </Button>
