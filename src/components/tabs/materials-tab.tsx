@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
-import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, ClipboardList } from "lucide-react";
 import { db, type Ingredient } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,9 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { parseShoppingNote, type ParsedItem } from "@/lib/note-parser";
 
 const UNITS = ["kg", "g", "l", "ml", "pcs"] as const;
 
@@ -55,6 +57,41 @@ export function MaterialsTab() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Ingredient | null>(null);
   const [form, setForm] = useState({ ...emptyMaterialForm });
+
+  // --- Import note state ---
+  const [importOpen, setImportOpen] = useState(false);
+  const [importText, setImportText] = useState("");
+  const [parsedItems, setParsedItems] = useState<ParsedItem[]>([]);
+  const [importSupplier, setImportSupplier] = useState("");
+  const [importSkipped, setImportSkipped] = useState<string[]>([]);
+
+  const handleParse = () => {
+    const result = parseShoppingNote(importText);
+    setImportSupplier(result.supplier);
+    setParsedItems(result.items);
+    setImportSkipped(result.skipped);
+  };
+
+  const handleImportAll = async () => {
+    if (parsedItems.length === 0) return;
+    const now = new Date().toISOString();
+    for (const item of parsedItems) {
+      await db.ingredients.add({
+        name: item.name,
+        unit: (UNITS.includes(item.unit as any) ? item.unit : "pcs") as Ingredient["unit"],
+        purchase_qty: item.purchase_qty,
+        purchase_price: item.purchase_price,
+        supplier: importSupplier || "",
+        updated_at: now,
+      });
+    }
+    toast.success(`${parsedItems.length} ingredients imported`);
+    setImportOpen(false);
+    setImportText("");
+    setParsedItems([]);
+    setImportSupplier("");
+    setImportSkipped([]);
+  };
 
   const filtered = (ingredients ?? []).filter((i) =>
     i.name.toLowerCase().includes(search.toLowerCase()),
@@ -142,6 +179,15 @@ export function MaterialsTab() {
         </div>
         <Button onClick={openAdd} size="icon" className="shrink-0 bg-emerald-600 hover:bg-emerald-700">
           <Plus className="size-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setImportOpen(true)}
+          className="shrink-0"
+          title="Import from note"
+        >
+          <ClipboardList className="size-4" />
         </Button>
       </div>
 
@@ -295,6 +341,85 @@ export function MaterialsTab() {
             >
               {editing ? "Update" : "Add"} Ingredient
             </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* === Import Note Dialog === */}
+      <Dialog open={importOpen} onOpenChange={setImportOpen}>
+        <DialogContent className="max-h-[85vh] overflow-y-auto border-border bg-card sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Import from Note</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Paste your shopping note. Lines like <code>Name 500g: 21.40</code> will be
+              parsed automatically.
+            </p>
+            <Textarea
+              placeholder={`Rosyam mart:\nCream cheese 500g: 21.4\nKulit popia kuning : 5.9 50 pcs\n...`}
+              value={importText}
+              onChange={(e) => setImportText(e.target.value)}
+              rows={8}
+              className="border-border bg-muted dark:bg-input font-mono text-sm"
+            />
+            <Button
+              onClick={handleParse}
+              disabled={!importText.trim()}
+              className="w-full bg-indigo-600 hover:bg-indigo-700"
+            >
+              Parse Note
+            </Button>
+
+            {parsedItems.length > 0 && (
+              <>
+                {importSupplier && (
+                  <p className="text-sm text-muted-foreground">
+                    Supplier: <span className="font-medium text-foreground">{importSupplier}</span>
+                  </p>
+                )}
+                <div className="rounded-lg border border-border bg-muted dark:bg-input overflow-hidden">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                        <th className="px-3 py-2 font-medium">Name</th>
+                        <th className="px-3 py-2 font-medium text-right">Qty</th>
+                        <th className="px-3 py-2 font-medium">Unit</th>
+                        <th className="px-3 py-2 font-medium text-right">Price (RM)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {parsedItems.map((item, i) => (
+                        <tr key={i} className="border-b border-border/50 last:border-0">
+                          <td className="px-3 py-2 text-foreground">{item.name}</td>
+                          <td className="px-3 py-2 text-right tabular-nums">{item.purchase_qty}</td>
+                          <td className="px-3 py-2">{item.unit}</td>
+                          <td className="px-3 py-2 text-right tabular-nums">
+                            {item.purchase_price.toFixed(2)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {importSkipped.length > 0 && (
+                  <details className="text-xs text-muted-foreground">
+                    <summary className="cursor-pointer">Skipped {importSkipped.length} line(s)</summary>
+                    <ul className="mt-1 list-inside list-disc space-y-0.5">
+                      {importSkipped.map((s, i) => (
+                        <li key={i}>{s}</li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
+                <Button
+                  onClick={handleImportAll}
+                  className="w-full bg-emerald-600 hover:bg-emerald-700"
+                >
+                  Import {parsedItems.length} Ingredient{parsedItems.length > 1 ? "s" : ""}
+                </Button>
+              </>
+            )}
           </div>
         </DialogContent>
       </Dialog>
