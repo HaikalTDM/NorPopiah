@@ -25,6 +25,7 @@ import {
 export interface IngredientCostLine {
   ingredientId: number;
   name: string;
+  category: Ingredient["category"];
   purchaseUnit: Unit;
   usageQty: number;
   usageUnit: Unit;
@@ -36,12 +37,15 @@ export interface IngredientCostLine {
 export interface RecipeCostBreakdown {
   recipeId: number;
   recipeName: string;
+
+  // Separated by category
   ingredientLines: IngredientCostLine[];
+  packagingLines: IngredientCostLine[];
 
   // Cost components
   totalIngredientCost: number;
+  totalPackagingCost: number; // auto-calculated
   wasteCost: number;
-  packagingCostPerBatch: number;
   laborBufferPerBatch: number;
 
   // Totals
@@ -87,6 +91,7 @@ export function calcIngredientLine(
   return {
     ingredientId: ingredient.id,
     name: ingredient.name,
+    category: ingredient.category,
     purchaseUnit: ingredient.unit,
     usageQty,
     usageUnit,
@@ -159,22 +164,30 @@ export function calcRecipeCostBreakdown(
   const { recipe, ingredients } = input;
   if (!recipe.id) return null;
 
-  // Calculate each ingredient line
+  // Calculate each ingredient line — split by category
   const ingredientLines: IngredientCostLine[] = [];
+  const packagingLines: IngredientCostLine[] = [];
   let totalIngredientCost = 0;
+  let totalPackagingCost = 0;
 
   for (const item of ingredients) {
     const line = calcIngredientLine(item.ingredient, item.usageQty, item.usageUnit);
     if (!line) continue;
-    ingredientLines.push(line);
-    totalIngredientCost += line.totalCost;
+
+    if (item.ingredient.category === "packaging") {
+      packagingLines.push(line);
+      totalPackagingCost += line.totalCost;
+    } else {
+      ingredientLines.push(line);
+      totalIngredientCost += line.totalCost;
+    }
   }
 
   const wasteCost = calcWasteCost(totalIngredientCost, recipe.waste_percentage);
   const totalProductionCost = calcTotalProductionCost(
     totalIngredientCost,
     recipe.waste_percentage,
-    recipe.packaging_cost,
+    totalPackagingCost,
     recipe.labor_buffer,
   );
 
@@ -190,9 +203,10 @@ export function calcRecipeCostBreakdown(
     recipeId: recipe.id,
     recipeName: recipe.name,
     ingredientLines,
+    packagingLines,
     totalIngredientCost,
+    totalPackagingCost,
     wasteCost,
-    packagingCostPerBatch: recipe.packaging_cost,
     laborBufferPerBatch: recipe.labor_buffer,
     totalProductionCost,
     costPerPiece,

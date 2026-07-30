@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Plus, Pencil, Trash2, Search, ClipboardList } from "lucide-react";
-import { db, type Ingredient } from "@/lib/db";
+import { db, type Ingredient, type IngredientCategory } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -39,6 +39,7 @@ type MaterialForm = {
   purchase_qty: string;
   purchase_price: string;
   supplier: string;
+  category: IngredientCategory;
 };
 
 const emptyMaterialForm: MaterialForm = {
@@ -47,6 +48,7 @@ const emptyMaterialForm: MaterialForm = {
   purchase_qty: "1",
   purchase_price: "",
   supplier: "",
+  category: "ingredient",
 };
 
 export function MaterialsTab() {
@@ -81,6 +83,7 @@ export function MaterialsTab() {
         unit: (UNITS.includes(item.unit as any) ? item.unit : "pcs") as Ingredient["unit"],
         purchase_qty: item.purchase_qty,
         purchase_price: item.purchase_price,
+        category: "ingredient",
         supplier: importSupplier || "",
         updated_at: now,
       });
@@ -111,6 +114,7 @@ export function MaterialsTab() {
       purchase_qty: String(ingredient.purchase_qty),
       purchase_price: String(ingredient.purchase_price),
       supplier: ingredient.supplier ?? "",
+      category: ingredient.category,
     });
     setDialogOpen(true);
   };
@@ -127,6 +131,7 @@ export function MaterialsTab() {
       purchase_qty: parseFloat(form.purchase_qty) || 0,
       purchase_price: parseFloat(form.purchase_price) || 0,
       supplier: form.supplier,
+      category: form.category,
       updated_at: new Date().toISOString(),
     };
 
@@ -221,6 +226,11 @@ export function MaterialsTab() {
                     >
                       {ingredient.unit}
                     </Badge>
+                    {ingredient.category === "packaging" && (
+                      <Badge className="shrink-0 bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 text-[10px]">
+                        📦 Packaging
+                      </Badge>
+                    )}
                   </div>
                   <div className="mt-1 flex items-center gap-3 text-sm text-muted-foreground">
                     <span>
@@ -323,6 +333,21 @@ export function MaterialsTab() {
                 }}
                 className="border-border bg-muted dark:bg-input text-foreground"
               />
+            </div>
+            <div>
+              <Label className="text-foreground/85">Category</Label>
+              <Select
+                value={form.category}
+                onValueChange={(v) => setForm({ ...form, category: v as IngredientCategory })}
+              >
+                <SelectTrigger className="border-border bg-muted dark:bg-input text-foreground">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ingredient">🥬 Ingredient</SelectItem>
+                  <SelectItem value="packaging">📦 Packaging</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label className="text-foreground/85">Supplier (optional)</Label>

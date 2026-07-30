@@ -294,6 +294,20 @@ export function RecipesTab() {
                           <span>{formatCurrency(ic.total_cost)}</span>
                         </div>
                       ))}
+                      {cost.packagingCosts.length > 0 && (
+                        <>
+                          <div className="mt-2 border-t border-border pt-2" />
+                          {cost.packagingCosts.map((pc, i) => (
+                            <div
+                              key={`pkg-${i}`}
+                              className="flex justify-between text-muted-foreground"
+                            >
+                              <span>📦 {pc.name} ({pc.qty_used} {pc.unit})</span>
+                              <span>{formatCurrency(pc.total_cost)}</span>
+                            </div>
+                          ))}
+                        </>
+                      )}
                       <div className="flex justify-between border-t border-border pt-1 text-foreground/85">
                         <span>Ingredients</span>
                         <span>
@@ -303,7 +317,7 @@ export function RecipesTab() {
                       <div className="flex justify-between text-muted-foreground">
                         <span>Packaging</span>
                         <span>
-                          {formatCurrency(cost.packaging_per_piece)}/pc
+                          {formatCurrency(cost.total_packaging_cost)}
                         </span>
                       </div>
                       <div className="flex justify-between text-muted-foreground">
@@ -374,6 +388,9 @@ export function RecipesTab() {
                     }}
                     className="border-border bg-muted dark:bg-input text-foreground"
                   />
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    How many pieces per batch?
+                  </p>
                 </div>
                 <div>
                   <Label className="text-foreground/85">Waste (%)</Label>
@@ -390,12 +407,15 @@ export function RecipesTab() {
                     }}
                     className="border-border bg-muted dark:bg-input text-foreground"
                   />
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    Extra material lost during prep (trim, spillage). Usually 0–5%.
+                  </p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label className="text-foreground/85">
-                    Packaging Cost (RM/batch)
+                    Packaging Cost (RM) <span className="text-muted-foreground font-normal">— auto</span>
                   </Label>
                   <Input
                     type="text"
@@ -410,10 +430,13 @@ export function RecipesTab() {
                     }}
                     className="border-border bg-muted dark:bg-input text-foreground"
                   />
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    Auto-calculated from 📦 packaging ingredients. Add extra here if needed.
+                  </p>
                 </div>
                 <div>
                   <Label className="text-foreground/85">
-                    Labor Buffer (RM/batch)
+                    Labor Buffer (RM)
                   </Label>
                   <Input
                     type="text"
@@ -428,6 +451,9 @@ export function RecipesTab() {
                     }}
                     className="border-border bg-muted dark:bg-input text-foreground"
                   />
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    Your time &amp; effort per batch. E.g., RM5 if it takes 30 min.
+                  </p>
                 </div>
               </div>
               <div>

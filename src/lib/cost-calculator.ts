@@ -25,11 +25,14 @@ export interface IngredientCost {
   qty_used: number;
   cost_per_unit: number;
   total_cost: number;
+  category?: string;
 }
 
 export interface RecipeCost {
   ingredientCosts: IngredientCost[];
+  packagingCosts: IngredientCost[];
   total_ingredient_cost: number;
+  total_packaging_cost: number;
   cost_per_piece: number;
   packaging_per_piece: number;
   labor_per_piece: number;
@@ -42,18 +45,23 @@ export interface RecipeCost {
 // ─── Adapter ──────────────────────────────────────────────────────
 
 function adaptBreakdown(b: RecipeCostBreakdown): RecipeCost {
+  const mapLine = (line: typeof b.ingredientLines[0]) => ({
+    name: line.name,
+    unit: line.purchaseUnit,
+    qty_used: line.usageQty,
+    cost_per_unit: line.costPerBaseUnit,
+    total_cost: line.totalCost,
+    category: line.category,
+  });
+
   return {
-    ingredientCosts: b.ingredientLines.map((line) => ({
-      name: line.name,
-      unit: line.purchaseUnit,
-      qty_used: line.usageQty,
-      cost_per_unit: line.costPerBaseUnit,
-      total_cost: line.totalCost,
-    })),
+    ingredientCosts: b.ingredientLines.map(mapLine),
+    packagingCosts: b.packagingLines.map(mapLine),
     total_ingredient_cost: b.totalIngredientCost,
+    total_packaging_cost: b.totalPackagingCost,
     cost_per_piece: b.costPerPiece,
     packaging_per_piece:
-      b.batchYield > 0 ? b.packagingCostPerBatch / b.batchYield : 0,
+      b.batchYield > 0 ? b.totalPackagingCost / b.batchYield : 0,
     labor_per_piece:
       b.batchYield > 0 ? b.laborBufferPerBatch / b.batchYield : 0,
     total_cost_per_piece: b.costPerPiece,
