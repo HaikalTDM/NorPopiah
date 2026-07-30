@@ -242,16 +242,16 @@ export function MaterialsTab() {
               <div>
                 <Label className="text-foreground/85">Purchase Qty</Label>
                 <Input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={form.purchase_qty}
-                  onChange={(e) =>
+                  type="text"
+                  inputMode="decimal"
+                  value={form.purchase_qty || ""}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/[^0-9.]/g, "");
                     setForm({
                       ...form,
-                      purchase_qty: parseFloat(e.target.value) || 0,
-                    })
-                  }
+                      purchase_qty: raw === "" ? 0 : parseFloat(raw) || 0,
+                    });
+                  }}
                   className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                 />
               </div>
@@ -259,16 +259,16 @@ export function MaterialsTab() {
             <div>
               <Label className="text-foreground/85">Purchase Price (RM)</Label>
               <Input
-                type="number"
-                step="0.01"
-                min="0"
-                value={form.purchase_price}
-                onChange={(e) =>
+                type="text"
+                inputMode="decimal"
+                value={form.purchase_price || ""}
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/[^0-9.]/g, "");
                   setForm({
                     ...form,
-                    purchase_price: parseFloat(e.target.value) || 0,
-                  })
-                }
+                    purchase_price: raw === "" ? 0 : parseFloat(raw) || 0,
+                  });
+                }}
                 className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
               />
             </div>

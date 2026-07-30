@@ -96,12 +96,13 @@ export function BatchScalerTab() {
                 </label>
                 <div className="flex gap-2">
                   <Input
-                    type="number"
-                    min="1"
-                    value={targetPieces}
-                    onChange={(e) =>
-                      setTargetPieces(parseInt(e.target.value) || 1)
-                    }
+                    type="text"
+                    inputMode="numeric"
+                    value={targetPieces || ""}
+                    onChange={(e) => {
+                      const raw = e.target.value.replace(/\D/g, "");
+                      setTargetPieces(raw === "" ? 1 : parseInt(raw) || 1);
+                    }}
                     className="border-border bg-muted/40 text-foreground dark:bg-white/5"
                   />
                 </div>

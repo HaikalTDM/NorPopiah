@@ -362,31 +362,32 @@ export function RecipesTab() {
                 <div>
                   <Label className="text-foreground/85">Batch Yield (pcs)</Label>
                   <Input
-                    type="number"
-                    min="1"
-                    value={form.batch_yield_pcs}
-                    onChange={(e) =>
+                    type="text"
+                    inputMode="numeric"
+                    value={form.batch_yield_pcs || ""}
+                    onChange={(e) => {
+                      const raw = e.target.value.replace(/\D/g, "");
                       setForm({
                         ...form,
-                        batch_yield_pcs: parseInt(e.target.value) || 0,
-                      })
-                    }
+                        batch_yield_pcs: raw === "" ? 0 : parseInt(raw) || 0,
+                      });
+                    }}
                     className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                   />
                 </div>
                 <div>
                   <Label className="text-foreground/85">Waste (%)</Label>
                   <Input
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={form.waste_percentage}
-                    onChange={(e) =>
+                    type="text"
+                    inputMode="numeric"
+                    value={form.waste_percentage || ""}
+                    onChange={(e) => {
+                      const raw = e.target.value.replace(/\D/g, "");
                       setForm({
                         ...form,
-                        waste_percentage: parseFloat(e.target.value) || 0,
-                      })
-                    }
+                        waste_percentage: raw === "" ? 0 : Math.min(100, parseInt(raw) || 0),
+                      });
+                    }}
                     className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                   />
                 </div>
@@ -397,16 +398,16 @@ export function RecipesTab() {
                     Packaging Cost (RM/batch)
                   </Label>
                   <Input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    value={form.packaging_cost}
-                    onChange={(e) =>
+                    type="text"
+                    inputMode="decimal"
+                    value={form.packaging_cost || ""}
+                    onChange={(e) => {
+                      const raw = e.target.value.replace(/[^0-9.]/g, "");
                       setForm({
                         ...form,
-                        packaging_cost: parseFloat(e.target.value) || 0,
-                      })
-                    }
+                        packaging_cost: raw === "" ? 0 : parseFloat(raw) || 0,
+                      });
+                    }}
                     className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                   />
                 </div>
@@ -415,16 +416,16 @@ export function RecipesTab() {
                     Labor Buffer (RM/batch)
                   </Label>
                   <Input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    value={form.labor_buffer}
-                    onChange={(e) =>
+                    type="text"
+                    inputMode="decimal"
+                    value={form.labor_buffer || ""}
+                    onChange={(e) => {
+                      const raw = e.target.value.replace(/[^0-9.]/g, "");
                       setForm({
                         ...form,
-                        labor_buffer: parseFloat(e.target.value) || 0,
-                      })
-                    }
+                        labor_buffer: raw === "" ? 0 : parseFloat(raw) || 0,
+                      });
+                    }}
                     className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                   />
                 </div>
@@ -496,13 +497,13 @@ export function RecipesTab() {
                         {getIngredientName(item.ingredient_id)}
                       </span>
                       <Input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={item.qty_used}
-                        onChange={(e) =>
-                          updateItemQty(idx, parseFloat(e.target.value) || 0)
-                        }
+                        type="text"
+                        inputMode="decimal"
+                        value={item.qty_used || ""}
+                        onChange={(e) => {
+                          const raw = e.target.value.replace(/[^0-9.]/g, "");
+                          updateItemQty(idx, raw === "" ? 0 : parseFloat(raw) || 0);
+                        }}
                         className="w-20 border-border bg-muted/30 dark:bg-white/5 text-right text-sm text-foreground"
                       />
                       <Badge
