@@ -33,7 +33,7 @@ export function InsightsTab() {
 
   if (margins.length === 0) {
     return (
-      <Card className="border-border bg-card backdrop-blur-lg">
+      <Card className="border-border bg-card">
         <CardContent className="py-12 text-center text-muted-foreground">
           Add recipes to see margin insights.
         </CardContent>
@@ -50,7 +50,7 @@ export function InsightsTab() {
     <div className="space-y-4">
       {/* Summary cards */}
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
-        <Card className="border-emerald-100 bg-emerald-50 backdrop-blur-lg dark:border-emerald-500/20 dark:bg-emerald-500/5">
+        <Card className="border-emerald-100 bg-emerald-50 dark:border-emerald-500/20 dark:bg-emerald-500/5">
           <CardContent className="p-3 text-center">
             <TrendingUp className="mx-auto mb-1 size-4 text-emerald-600 dark:text-emerald-400" />
             <p className="text-xs text-muted-foreground">Highest Margin</p>
@@ -59,7 +59,7 @@ export function InsightsTab() {
             </p>
           </CardContent>
         </Card>
-        <Card className="border-border bg-card backdrop-blur-lg">
+        <Card className="border-border bg-card">
           <CardContent className="p-3 text-center">
             <DollarSign className="mx-auto mb-1 size-4 text-muted-foreground" />
             <p className="text-xs text-muted-foreground">Avg Margin</p>
@@ -68,7 +68,7 @@ export function InsightsTab() {
             </p>
           </CardContent>
         </Card>
-        <Card className="border-red-100 bg-red-50 backdrop-blur-lg dark:border-red-500/20 dark:bg-red-500/5">
+        <Card className="border-red-100 bg-red-50 dark:border-red-500/20 dark:bg-red-500/5">
           <CardContent className="p-3 text-center">
             <TrendingDown className="mx-auto mb-1 size-4 text-red-500" />
             <p className="text-xs text-muted-foreground">Lowest Margin</p>
@@ -80,7 +80,7 @@ export function InsightsTab() {
       </div>
 
       {/* Margin leaderboard */}
-      <Card className="border-border bg-card backdrop-blur-lg">
+      <Card className="border-border bg-card">
         <CardContent className="p-0">
           <div className="border-b border-border px-4 py-3">
             <h3 className="text-sm font-medium text-foreground/85">
@@ -102,7 +102,7 @@ export function InsightsTab() {
                           ? "bg-slate-100 text-slate-600 dark:bg-slate-400/20 dark:text-slate-400"
                           : idx === 2
                             ? "bg-orange-100 text-orange-700 dark:bg-orange-600/20 dark:text-orange-400"
-                            : "bg-muted/30 text-muted-foreground"
+                            : "bg-muted text-muted-foreground"
                     }`}
                   >
                     {idx + 1}
@@ -121,7 +121,7 @@ export function InsightsTab() {
                   className={
                     item.margin > avgMargin
                       ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400"
-                      : "bg-muted/30 text-muted-foreground"
+                      : "bg-muted text-muted-foreground"
                   }
                 >
                   +{formatCurrency(item.margin)}/pc

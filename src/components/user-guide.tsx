@@ -67,7 +67,7 @@ function getPages(): GuidePage[] {
       content: (
         <div className="space-y-3 text-sm leading-relaxed text-foreground/85">
           <p>Before creating recipes, add every ingredient you purchase.</p>
-          <div className="rounded-lg bg-muted/30 dark:bg-slate-800/50 border border-border p-3 space-y-1.5 text-xs">
+          <div className="rounded-lg bg-muted dark:bg-slate-800/50 border border-border p-3 space-y-1.5 text-xs">
             <p className="font-medium text-foreground/90">For each material:</p>
             <ul className="space-y-0.5 text-muted-foreground">
               <li>• Ingredient name</li>
@@ -133,7 +133,7 @@ function getPages(): GuidePage[] {
             Need to produce more than your standard batch? Use the&nbsp;
             <span className="text-foreground font-medium">Batch Scaler</span>.
           </p>
-          <div className="rounded-lg bg-muted/30 dark:bg-slate-800/50 border border-border p-3">
+          <div className="rounded-lg bg-muted dark:bg-slate-800/50 border border-border p-3">
             <p className="text-xs text-muted-foreground mb-2">Example</p>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div>
@@ -198,7 +198,7 @@ function getPages(): GuidePage[] {
             All your recipes, ingredients, and calculations are stored locally
             on your device. No cloud required.
           </p>
-          <div className="rounded-lg bg-muted/30 dark:bg-slate-800/50 border border-border p-3 space-y-2">
+          <div className="rounded-lg bg-muted dark:bg-slate-800/50 border border-border p-3 space-y-2">
             <div className="flex items-start gap-2 text-xs">
               <span className="mt-0.5 shrink-0">📥</span>
               <div>
@@ -312,7 +312,7 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100%-2rem)] max-w-md border-border p-0 gap-0 sm:max-w-md bg-card backdrop-blur-2xl">
+      <DialogContent className="w-[calc(100%-2rem)] max-w-md border-border p-0 gap-0 sm:max-w-md bg-card">
         <DialogTitle className="sr-only">
           User Guide — {page.title}
         </DialogTitle>
@@ -372,7 +372,7 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
               {currentPage > 0 ? (
                 <button
                   onClick={prev}
-                  className="flex items-center gap-1 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground active:scale-[0.98]"
+                  className="flex items-center gap-1 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:scale-[0.98]"
                 >
                   <ChevronLeft className="size-3.5" />
                   Prev
@@ -380,7 +380,7 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
               ) : (
                 <button
                   onClick={handleSkip}
-                  className="rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground/70 transition-colors hover:bg-muted/50 hover:text-muted-foreground active:scale-[0.98]"
+                  className="rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground/70 transition-colors hover:bg-muted hover:text-muted-foreground active:scale-[0.98]"
                 >
                   Skip
                 </button>
@@ -401,7 +401,7 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
               ) : (
                 <button
                   onClick={next}
-                  className="flex items-center gap-1 rounded-lg bg-muted/40 px-4 py-2 text-xs font-medium text-foreground/90 transition-colors hover:bg-muted/60 active:scale-[0.98] dark:bg-white/5 dark:hover:bg-white/10"
+                  className="flex items-center gap-1 rounded-lg bg-muted px-4 py-2 text-xs font-medium text-foreground/90 transition-colors hover:bg-muted active:scale-[0.98] dark:bg-input dark:hover:bg-input"
                 >
                   Next
                   <ChevronRight className="size-3.5" />

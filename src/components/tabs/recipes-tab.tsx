@@ -212,7 +212,7 @@ export function RecipesTab() {
       </div>
 
       {!recipes?.length ? (
-        <Card className="border-border bg-muted/40 dark:bg-white/5 backdrop-blur-lg">
+        <Card className="border-border bg-muted dark:bg-input">
           <CardContent className="py-12 text-center text-muted-foreground">
             No recipes yet. Create your first one!
           </CardContent>
@@ -227,7 +227,7 @@ export function RecipesTab() {
             return (
               <Card
                 key={recipe.id}
-                className="border-border bg-muted/40 dark:bg-white/5 backdrop-blur-lg"
+                className="border-border bg-muted dark:bg-input"
               >
                 <button
                   onClick={() => recipe.id && toggleExpand(recipe.id)}
@@ -338,7 +338,7 @@ export function RecipesTab() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto border-border bg-card backdrop-blur-xl sm:max-w-lg">
+        <DialogContent className="max-h-[85vh] overflow-y-auto border-border bg-card sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-foreground">
               {editing ? "Edit Recipe" : "New Recipe"}
@@ -355,7 +355,7 @@ export function RecipesTab() {
                     setForm({ ...form, name: e.target.value })
                   }
                   placeholder="e.g. Popiah Basah"
-                  className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
+                  className="border-border bg-muted dark:bg-input text-foreground"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -372,7 +372,7 @@ export function RecipesTab() {
                         batch_yield_pcs: raw === "" ? 0 : parseInt(raw) || 0,
                       });
                     }}
-                    className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
+                    className="border-border bg-muted dark:bg-input text-foreground"
                   />
                 </div>
                 <div>
@@ -388,7 +388,7 @@ export function RecipesTab() {
                         waste_percentage: raw === "" ? 0 : Math.min(100, parseInt(raw) || 0),
                       });
                     }}
-                    className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
+                    className="border-border bg-muted dark:bg-input text-foreground"
                   />
                 </div>
               </div>
@@ -408,7 +408,7 @@ export function RecipesTab() {
                         packaging_cost: raw === "" ? 0 : parseFloat(raw) || 0,
                       });
                     }}
-                    className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
+                    className="border-border bg-muted dark:bg-input text-foreground"
                   />
                 </div>
                 <div>
@@ -426,7 +426,7 @@ export function RecipesTab() {
                         labor_buffer: raw === "" ? 0 : parseFloat(raw) || 0,
                       });
                     }}
-                    className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
+                    className="border-border bg-muted dark:bg-input text-foreground"
                   />
                 </div>
               </div>
@@ -462,7 +462,7 @@ export function RecipesTab() {
                 <Select
                   onValueChange={(v) => addIngredientToForm(parseInt(v))}
                 >
-                  <SelectTrigger className="w-[180px] border-border bg-muted/30 dark:bg-white/5 text-foreground">
+                  <SelectTrigger className="w-[180px] border-border bg-muted dark:bg-input text-foreground">
                     <SelectValue placeholder="+ Add ingredient" />
                   </SelectTrigger>
                   <SelectContent className="border-border bg-card">
@@ -491,7 +491,7 @@ export function RecipesTab() {
                   {recipeItems.map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 dark:bg-white/5 p-3"
+                      className="flex items-center gap-2 rounded-lg border border-border bg-muted dark:bg-input p-3"
                     >
                       <span className="flex-1 text-sm text-foreground/90">
                         {getIngredientName(item.ingredient_id)}
@@ -504,7 +504,7 @@ export function RecipesTab() {
                           const raw = e.target.value.replace(/[^0-9.]/g, "");
                           updateItemQty(idx, raw === "" ? 0 : parseFloat(raw) || 0);
                         }}
-                        className="w-20 border-border bg-muted/30 dark:bg-white/5 text-right text-sm text-foreground"
+                        className="w-20 border-border bg-muted dark:bg-input text-right text-sm text-foreground"
                       />
                       <Badge
                         variant="outline"

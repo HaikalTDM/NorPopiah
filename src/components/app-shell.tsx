@@ -80,7 +80,7 @@ export function AppShell() {
 
     toast.custom(
       () => (
-        <div className="pointer-events-auto w-full max-w-sm rounded-xl border border-border p-4 shadow-2xl backdrop-blur-xl bg-card">
+        <div className="pointer-events-auto w-full max-w-sm rounded-xl border border-border bg-card p-4 shadow-lg">
           <p className="text-sm font-semibold text-foreground">Install App</p>
           <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
             Install Modal &amp; Recipe Cost Manager for faster access and full
@@ -159,13 +159,13 @@ export function AppShell() {
       <Toaster
         position="bottom-center"
         toastOptions={{
-          className: "glass-card",
+          className: "card",
           style: { color: "var(--foreground)" },
         }}
       />
 
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-lg">
+      <header className="sticky top-0 z-50 border-b border-border bg-background">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
             <span className="text-xl sm:text-2xl">🥮</span>
@@ -223,7 +223,7 @@ export function AppShell() {
         onValueChange={setActiveTab}
         className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8"
       >
-        <TabsList className="grid w-full grid-cols-4 bg-muted/30 backdrop-blur-sm">
+        <TabsList className="grid w-full grid-cols-4 bg-muted">
           {TABS.map((tab) => (
             <TabsTrigger
               key={tab.id}

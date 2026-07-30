@@ -3,33 +3,33 @@
 /* === Tailwind v4: class-based dark mode === */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* === Light Mode (default) === */
+/* === Light Mode (default) — Clean Professional === */
 :root {
-  --background: #faf7f5;
-  --foreground: #1c1917;
-  --card: rgba(255, 255, 255, 0.7);
-  --card-foreground: #1c1917;
-  --border: rgba(120, 113, 108, 0.15);
-  --input: rgba(120, 113, 108, 0.12);
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --border: #e2e8f0;
+  --input: #f1f5f9;
   --ring: #059669;
-  --radius: 0.75rem;
-  --muted: #a8a29e;
-  --muted-foreground: #57534e;
-  --accent: rgba(16, 185, 129, 0.12);
+  --radius: 0.5rem;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #ecfdf5;
   --accent-foreground: #047857;
   color-scheme: light;
 }
 
-/* === Dark Mode === */
+/* === Dark Mode — Clean Professional === */
 .dark {
   --background: #020617;
   --foreground: #f1f5f9;
-  --card: rgba(15, 23, 42, 0.6);
+  --card: #0f172a;
   --card-foreground: #f1f5f9;
-  --border: rgba(148, 163, 184, 0.15);
-  --input: rgba(148, 163, 184, 0.12);
+  --border: #1e293b;
+  --input: #1e293b;
   --ring: #10b981;
-  --muted: #475569;
+  --muted: #1e293b;
   --muted-foreground: #94a3b8;
   --accent: rgba(16, 185, 129, 0.1);
   --accent-foreground: #6ee7b7;
@@ -49,26 +49,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* === Glassmorphism utilities === */
-.glass-card {
+/* === Card utility — clean solid surface === */
+.card {
   background: var(--card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border-color: var(--border);
-}
-
-.glass-card-light {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(120, 113, 108, 0.08);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
-}
-
-:is(.dark) .glass-card-light {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* === Scrollbar === */

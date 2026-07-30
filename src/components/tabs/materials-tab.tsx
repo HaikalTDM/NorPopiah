@@ -137,7 +137,7 @@ export function MaterialsTab() {
             placeholder="Search ingredients..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border-border bg-muted/30 dark:bg-white/5 pl-9 text-foreground placeholder:text-muted-foreground/60"
+            className="border-border bg-muted dark:bg-input pl-9 text-foreground placeholder:text-muted-foreground/60"
           />
         </div>
         <Button onClick={openAdd} size="icon" className="shrink-0 bg-emerald-600 hover:bg-emerald-700">
@@ -147,7 +147,7 @@ export function MaterialsTab() {
 
       {/* List */}
       {filtered.length === 0 ? (
-        <Card className="border-border bg-card backdrop-blur-lg">
+        <Card className="border-border bg-card">
           <CardContent className="py-12 text-center">
             <p className="text-muted-foreground">
               {ingredients?.length
@@ -161,7 +161,7 @@ export function MaterialsTab() {
           {filtered.map((ingredient) => (
             <Card
               key={ingredient.id}
-              className="border-border bg-card backdrop-blur-lg transition-colors hover:bg-muted/50 dark:hover:bg-white/[0.07]"
+              className="border-border bg-card transition-colors hover:bg-muted dark:hover:bg-input"
             >
               <CardContent className="flex items-center justify-between p-4">
                 <div className="min-w-0 flex-1">
@@ -214,7 +214,7 @@ export function MaterialsTab() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="border-border bg-card backdrop-blur-xl sm:max-w-md">
+        <DialogContent className="border-border bg-card sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-foreground">
               {editing ? "Edit Ingredient" : "Add Ingredient"}
@@ -227,7 +227,7 @@ export function MaterialsTab() {
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="e.g. Tepung Gandum"
-                className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
+                className="border-border bg-muted dark:bg-input text-foreground"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -239,7 +239,7 @@ export function MaterialsTab() {
                     setForm({ ...form, unit: v as Ingredient["unit"] })
                   }
                 >
-                  <SelectTrigger className="border-border bg-muted/30 dark:bg-white/5 text-foreground">
+                  <SelectTrigger className="border-border bg-muted dark:bg-input text-foreground">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="border-border bg-card">
@@ -261,7 +261,7 @@ export function MaterialsTab() {
                     const raw = e.target.value.replace(/[^0-9.]/g, "");
                     setForm({ ...form, purchase_qty: raw });
                   }}
-                  className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
+                  className="border-border bg-muted dark:bg-input text-foreground"
                 />
               </div>
             </div>
@@ -275,7 +275,7 @@ export function MaterialsTab() {
                   const raw = e.target.value.replace(/[^0-9.]/g, "");
                   setForm({ ...form, purchase_price: raw });
                 }}
-                className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
+                className="border-border bg-muted dark:bg-input text-foreground"
               />
             </div>
             <div>
@@ -286,7 +286,7 @@ export function MaterialsTab() {
                   setForm({ ...form, supplier: e.target.value })
                 }
                 placeholder="e.g. Pasar Borong Selayang"
-                className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
+                className="border-border bg-muted dark:bg-input text-foreground"
               />
             </div>
             <Button
