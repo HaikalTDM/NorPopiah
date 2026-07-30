@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   Package,
   ChefHat,
@@ -26,32 +26,110 @@ const TABS = [
   { id: "insights", label: "Insights", icon: BarChart3 },
 ];
 
+const INSTALL_TOAST_DELAY = 2500; // ms before showing install prompt
+const INSTALL_TOAST_ID = "pwa-install-prompt";
+
+function isPwaInstalled(): boolean {
+  if (typeof window === "undefined") return true; // SSR: skip
+  return window.matchMedia("(display-mode: standalone)").matches;
+}
+
 export function AppShell() {
   const [activeTab, setActiveTab] = useState("materials");
-  const [deferredPrompt, setDeferredPrompt] =
-    useState<BeforeInstallPromptEvent | null>(null);
-  const [isInstallable, setIsInstallable] = useState(false);
+  const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
+  const shownToastRef = useRef(false);
+
+  const handleInstallClick = useCallback(async () => {
+    const prompt = deferredPromptRef.current;
+    if (!prompt) return;
+    prompt.prompt();
+    const result = await prompt.userChoice;
+    deferredPromptRef.current = null;
+    toast.dismiss(INSTALL_TOAST_ID);
+    if (result.outcome === "accepted") {
+      toast.success("App installed! Launch from your home screen.", {
+        style: {
+          background: "rgba(15, 23, 42, 0.95)",
+          color: "#e2e8f0",
+          border: "1px solid rgba(52, 211, 153, 0.3)",
+          backdropFilter: "blur(12px)",
+        },
+      });
+    }
+  }, []);
+
+  const handleInstallLater = useCallback(() => {
+    toast.dismiss(INSTALL_TOAST_ID);
+  }, []);
+
+  const showInstallToast = useCallback(() => {
+    if (shownToastRef.current) return;
+    if (!deferredPromptRef.current) return;
+    if (isPwaInstalled()) return;
+    shownToastRef.current = true;
+
+    toast.custom(
+      () => (
+        <div
+          className="pointer-events-auto w-full max-w-sm rounded-xl border border-white/10 p-4 shadow-2xl"
+          style={{
+            background: "rgba(15, 23, 42, 0.92)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+          }}
+        >
+          <p className="text-sm font-semibold text-slate-100">Install App</p>
+          <p className="mt-1 text-xs leading-relaxed text-slate-400">
+            Install Modal &amp; Recipe Cost Manager for faster access and full
+            offline support.
+          </p>
+          <div className="mt-3 flex items-center gap-2">
+            <button
+              onClick={handleInstallClick}
+              className="flex-1 rounded-lg bg-emerald-500/20 px-3 py-2 text-xs font-medium text-emerald-300 transition-colors hover:bg-emerald-500/30 active:scale-[0.98]"
+            >
+              Install
+            </button>
+            <button
+              onClick={handleInstallLater}
+              className="flex-1 rounded-lg bg-white/5 px-3 py-2 text-xs font-medium text-slate-400 transition-colors hover:bg-white/10 active:scale-[0.98]"
+            >
+              Later
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        id: INSTALL_TOAST_ID,
+        duration: Infinity,
+        position: "bottom-center",
+        style: { background: "transparent", border: "none", boxShadow: "none" },
+      },
+    );
+  }, [handleInstallClick, handleInstallLater]);
 
   useEffect(() => {
     const handler = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setIsInstallable(true);
+      deferredPromptRef.current = e as BeforeInstallPromptEvent;
+
+      // Show toast after delay
+      setTimeout(() => {
+        showInstallToast();
+      }, INSTALL_TOAST_DELAY);
     };
+
     window.addEventListener("beforeinstallprompt", handler);
+
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js");
     }
-    return () => window.removeEventListener("beforeinstallprompt", handler);
-  }, []);
 
-  const handleInstall = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const result = await deferredPrompt.userChoice;
-    if (result.outcome === "accepted") setIsInstallable(false);
-    setDeferredPrompt(null);
-  };
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+      toast.dismiss(INSTALL_TOAST_ID);
+    };
+  }, [showInstallToast]);
 
   const handleExport = async () => {
     try {
@@ -107,11 +185,6 @@ export function AppShell() {
             </span>
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
-            {isInstallable && (
-              <Button variant="ghost" size="icon" onClick={handleInstall} title="Install app">
-                <Download className="size-4 sm:size-5" />
-              </Button>
-            )}
             <Button variant="ghost" size="icon" onClick={handleExport} title="Export backup">
               <Download className="size-4 sm:size-5" />
             </Button>
