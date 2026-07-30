@@ -67,7 +67,7 @@ function adaptBreakdown(b: RecipeCostBreakdown): RecipeCost {
     total_cost_per_piece: b.costPerPiece,
     suggested_price: b.suggestedPrice,
     margin_per_piece: b.profitPerPiece,
-    margin_percent: b.targetMarginPercent,
+    margin_percent: b.actualMarginPercent,
   };
 }
 

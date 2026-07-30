@@ -39,6 +39,7 @@ interface RecipeForm {
   packaging_cost: number;
   labor_buffer: number;
   target_margin_percent: number;
+  selling_price_per_piece: number;
 }
 
 const emptyForm: RecipeForm = {
@@ -48,6 +49,7 @@ const emptyForm: RecipeForm = {
   packaging_cost: 2.5,
   labor_buffer: 5,
   target_margin_percent: 60,
+  selling_price_per_piece: 0,
 };
 
 export function RecipesTab() {
@@ -105,6 +107,7 @@ export function RecipesTab() {
       packaging_cost: recipe.packaging_cost,
       labor_buffer: recipe.labor_buffer,
       target_margin_percent: recipe.target_margin_percent,
+      selling_price_per_piece: recipe.selling_price_per_piece ?? 0,
     });
 
     if (recipe.id) {
@@ -239,8 +242,10 @@ export function RecipesTab() {
                         {recipe.name}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Yield: {recipe.batch_yield_pcs} pcs · Margin:{" "}
-                        {recipe.target_margin_percent}%
+                        Yield: {recipe.batch_yield_pcs} pcs
+                        {recipe.selling_price_per_piece > 0
+                          ? ` · Price: ${formatCurrency(recipe.selling_price_per_piece)}/pc`
+                          : ` · Target: ${recipe.target_margin_percent}%`}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -331,14 +336,14 @@ export function RecipesTab() {
                         </span>
                       </div>
                       <div className="flex justify-between font-semibold text-emerald-600 dark:text-emerald-400">
-                        <span>Suggested Price</span>
+                        <span>{recipe.selling_price_per_piece > 0 ? "Selling Price" : "Suggested Price"}</span>
                         <span>{formatCurrency(cost.suggested_price)}/pc</span>
                       </div>
                       <div className="flex justify-between text-indigo-600 dark:text-indigo-400">
-                        <span>Margin</span>
+                        <span>Margin{recipe.selling_price_per_piece > 0 ? " (calculated)" : ""}</span>
                         <span>
                           {formatCurrency(cost.margin_per_piece)}/pc (
-                          {cost.margin_percent}%)
+                          {cost.margin_percent.toFixed(1)}%)
                         </span>
                       </div>
                     </div>
@@ -473,6 +478,31 @@ export function RecipesTab() {
                   }
                   className="accent-emerald-500"
                 />
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  Used to suggest a price. Ignored if you set a selling price below.
+                </p>
+              </div>
+              <div>
+                <Label className="text-foreground/85">
+                  Selling Price (RM/pc) <span className="text-muted-foreground font-normal">— optional</span>
+                </Label>
+                <Input
+                  type="text"
+                  inputMode="decimal"
+                  placeholder="e.g. 2.50"
+                  value={form.selling_price_per_piece || ""}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/[^0-9.]/g, "");
+                    setForm({
+                      ...form,
+                      selling_price_per_piece: raw === "" ? 0 : parseFloat(raw) || 0,
+                    });
+                  }}
+                  className="border-border bg-muted dark:bg-input text-foreground"
+                />
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  Set your actual selling price. Margin % auto-calculates from this. Leave 0 to use the slider above.
+                </p>
               </div>
               <Button
                 onClick={() => setStep(2)}

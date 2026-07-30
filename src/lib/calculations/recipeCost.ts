@@ -192,12 +192,22 @@ export function calcRecipeCostBreakdown(
   );
 
   const costPerPiece = calcCostPerPiece(totalProductionCost, recipe.batch_yield_pcs);
-  const suggestedPrice = suggestedPriceFromMargin(
-    costPerPiece,
-    recipe.target_margin_percent,
-  );
 
-  const profitResult = calculateProfit(costPerPiece, suggestedPrice);
+  // Determine selling price: use explicit price if set, otherwise derive from margin
+  let sellingPrice: number;
+  let effectiveMarginPercent: number;
+
+  if (recipe.selling_price_per_piece > 0) {
+    // User set a price — calculate actual margin from it
+    sellingPrice = recipe.selling_price_per_piece;
+    effectiveMarginPercent = calculateMarginPercent(costPerPiece, sellingPrice);
+  } else {
+    // Use target margin to derive suggested price
+    sellingPrice = suggestedPriceFromMargin(costPerPiece, recipe.target_margin_percent);
+    effectiveMarginPercent = recipe.target_margin_percent;
+  }
+
+  const profitResult = calculateProfit(costPerPiece, sellingPrice);
 
   return {
     recipeId: recipe.id,
@@ -211,10 +221,10 @@ export function calcRecipeCostBreakdown(
     totalProductionCost,
     costPerPiece,
     batchYield: recipe.batch_yield_pcs,
-    suggestedPrice,
+    suggestedPrice: sellingPrice,
     targetMarginPercent: recipe.target_margin_percent,
-    actualMarginPercent: calculateMarginPercent(costPerPiece, suggestedPrice),
-    markupPercent: calculateMarkupPercent(costPerPiece, suggestedPrice),
+    actualMarginPercent: calculateMarginPercent(costPerPiece, sellingPrice),
+    markupPercent: calculateMarkupPercent(costPerPiece, sellingPrice),
     profitPerPiece: profitResult.profitPerPiece,
   };
 }

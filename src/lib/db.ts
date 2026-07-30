@@ -20,7 +20,8 @@ export interface Recipe {
   waste_percentage: number; // e.g. 5 (%)
   packaging_cost: number; // auto-calculated from packaging ingredients
   labor_buffer: number; // your time/effort per batch
-  target_margin_percent: number; // e.g. 60 (%)
+  target_margin_percent: number; // e.g. 60 (%) — used only when selling_price_per_piece is 0
+  selling_price_per_piece: number; // 0 = use margin slider; >0 = use this price, calculate margin
   created_at: string;
 }
 
