@@ -8,6 +8,7 @@ import {
   BarChart3,
   Download,
   Upload,
+  BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -18,6 +19,7 @@ import { InsightsTab } from "./tabs/insights-tab";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { exportDatabase, importDatabase } from "@/lib/backup";
+import { UserGuide, isOnboardingComplete } from "./user-guide";
 
 const TABS = [
   { id: "materials", label: "Materials", icon: Package },
@@ -38,6 +40,15 @@ export function AppShell() {
   const [activeTab, setActiveTab] = useState("materials");
   const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
   const shownToastRef = useRef(false);
+  const [guideOpen, setGuideOpen] = useState(false);
+
+  // Auto-open guide for first-time users
+  useEffect(() => {
+    if (!isOnboardingComplete()) {
+      const timer = setTimeout(() => setGuideOpen(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const handleInstallClick = useCallback(async () => {
     const prompt = deferredPromptRef.current;
@@ -185,6 +196,14 @@ export function AppShell() {
             </span>
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setGuideOpen(true)}
+              title="User Guide"
+            >
+              <BookOpen className="size-4 sm:size-5" />
+            </Button>
             <Button variant="ghost" size="icon" onClick={handleExport} title="Export backup">
               <Download className="size-4 sm:size-5" />
             </Button>
@@ -217,6 +236,8 @@ export function AppShell() {
           <TabsContent value="insights"><InsightsTab /></TabsContent>
         </div>
       </Tabs>
+
+      <UserGuide open={guideOpen} onOpenChange={setGuideOpen} />
     </div>
   );
 }
