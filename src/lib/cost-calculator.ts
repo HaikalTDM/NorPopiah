@@ -1,4 +1,23 @@
-import { db, type Recipe, type RecipeItem, type Ingredient } from "./db";
+/**
+ * Legacy compatibility layer.
+ *
+ * All calculation logic lives in src/lib/calculations/.
+ * This file adapts the new API to the original interface so
+ * existing UI components continue to work unchanged.
+ *
+ * New code should import directly from "@/lib/calculations".
+ */
+
+import type { Recipe } from "./db";
+import {
+  getRecipeCost as getRecipeCostNew,
+  getScaledRecipeCost as getScaledCostNew,
+  getAllRecipeMargins as getAllMarginsNew,
+  type RecipeCostBreakdown,
+} from "./calculations";
+import { suggestedPriceFromMargin, calculateMarginPercent } from "./calculations/profit";
+
+// ─── Legacy Types ─────────────────────────────────────────────────
 
 export interface IngredientCost {
   name: string;
@@ -11,100 +30,48 @@ export interface IngredientCost {
 export interface RecipeCost {
   ingredientCosts: IngredientCost[];
   total_ingredient_cost: number;
-  cost_per_piece: number; // raw ingredient cost per piece
+  cost_per_piece: number;
   packaging_per_piece: number;
   labor_per_piece: number;
-  total_cost_per_piece: number; // all costs combined
-  suggested_price: number; // with margin
+  total_cost_per_piece: number;
+  suggested_price: number;
   margin_per_piece: number;
   margin_percent: number;
 }
 
-/**
- * Calculate the full cost breakdown for a recipe.
- * Uses live ingredient data from the database.
- */
-export async function calculateRecipeCost(
-  recipeId: number,
-): Promise<RecipeCost | null> {
-  const recipe = await db.recipes.get(recipeId);
-  if (!recipe) return null;
+// ─── Adapter ──────────────────────────────────────────────────────
 
-  const items = await db.recipe_items
-    .where("recipe_id")
-    .equals(recipeId)
-    .toArray();
-
-  const ingredientCosts: IngredientCost[] = [];
-
-  for (const item of items) {
-    const ingredient = await db.ingredients.get(item.ingredient_id);
-    if (!ingredient) continue;
-
-    const costPerUnit =
-      ingredient.purchase_price / ingredient.purchase_qty;
-    const totalCost = costPerUnit * item.qty_used;
-
-    ingredientCosts.push({
-      name: ingredient.name,
-      unit: ingredient.unit,
-      qty_used: item.qty_used,
-      cost_per_unit: costPerUnit,
-      total_cost: totalCost,
-    });
-  }
-
-  const total_ingredient_cost = ingredientCosts.reduce(
-    (sum, ic) => sum + ic.total_cost,
-    0,
-  );
-
-  // Adjust for waste
-  const wasteMultiplier = 1 + recipe.waste_percentage / 100;
-  const adjusted_ingredient_cost =
-    total_ingredient_cost * wasteMultiplier;
-
-  const effective_yield =
-    recipe.batch_yield_pcs * (1 - recipe.waste_percentage / 100);
-
-  const cost_per_piece =
-    effective_yield > 0
-      ? adjusted_ingredient_cost / recipe.batch_yield_pcs
-      : 0;
-
-  const packaging_per_piece =
-    recipe.batch_yield_pcs > 0
-      ? recipe.packaging_cost / recipe.batch_yield_pcs
-      : 0;
-
-  const labor_per_piece =
-    recipe.batch_yield_pcs > 0
-      ? recipe.labor_buffer / recipe.batch_yield_pcs
-      : 0;
-
-  const total_cost_per_piece =
-    cost_per_piece + packaging_per_piece + labor_per_piece;
-
-  const marginMultiplier = 1 + recipe.target_margin_percent / 100;
-  const suggested_price = total_cost_per_piece * marginMultiplier;
-  const margin_per_piece = suggested_price - total_cost_per_piece;
-
+function adaptBreakdown(b: RecipeCostBreakdown): RecipeCost {
   return {
-    ingredientCosts,
-    total_ingredient_cost,
-    cost_per_piece,
-    packaging_per_piece,
-    labor_per_piece,
-    total_cost_per_piece,
-    suggested_price,
-    margin_per_piece,
-    margin_percent: recipe.target_margin_percent,
+    ingredientCosts: b.ingredientLines.map((line) => ({
+      name: line.name,
+      unit: line.purchaseUnit,
+      qty_used: line.usageQty,
+      cost_per_unit: line.costPerBaseUnit,
+      total_cost: line.totalCost,
+    })),
+    total_ingredient_cost: b.totalIngredientCost,
+    cost_per_piece: b.costPerPiece,
+    packaging_per_piece:
+      b.batchYield > 0 ? b.packagingCostPerBatch / b.batchYield : 0,
+    labor_per_piece:
+      b.batchYield > 0 ? b.laborBufferPerBatch / b.batchYield : 0,
+    total_cost_per_piece: b.costPerPiece,
+    suggested_price: b.suggestedPrice,
+    margin_per_piece: b.profitPerPiece,
+    margin_percent: b.targetMarginPercent,
   };
 }
 
-/**
- * Scale a recipe to a different order quantity.
- */
+// ─── Exported Functions (legacy API) ──────────────────────────────
+
+export async function calculateRecipeCost(
+  recipeId: number,
+): Promise<RecipeCost | null> {
+  const breakdown = await getRecipeCostNew(recipeId);
+  return breakdown ? adaptBreakdown(breakdown) : null;
+}
+
 export async function calculateScaledCost(
   recipeId: number,
   targetPieces: number,
@@ -115,47 +82,35 @@ export async function calculateScaledCost(
   totalRevenue: number;
   totalProfit: number;
 } | null> {
+  const result = await getScaledCostNew(recipeId, targetPieces);
+  const { db } = await import("./db");
   const recipe = await db.recipes.get(recipeId);
-  if (!recipe) return null;
-
-  const cost = await calculateRecipeCost(recipeId);
-  if (!cost) return null;
-
-  const scaleFactor = targetPieces / recipe.batch_yield_pcs;
-  const totalRevenue = cost.suggested_price * targetPieces;
-  const totalProfit = cost.margin_per_piece * targetPieces;
+  if (!result || !recipe) return null;
 
   return {
     recipe,
-    cost,
+    cost: adaptBreakdown(result.breakdown),
     scaledQuantity: targetPieces,
-    totalRevenue,
-    totalProfit,
+    totalRevenue: result.totalRevenue,
+    totalProfit: result.totalProfit,
   };
 }
 
-/**
- * Get margin data for all recipes (for Insights tab).
- */
 export async function getAllRecipeMargins(): Promise<
-  Array<{ id: number; name: string; margin: number; price: number; cost: number }>
+  Array<{
+    id: number;
+    name: string;
+    margin: number;
+    price: number;
+    cost: number;
+  }>
 > {
-  const recipes = await db.recipes.toArray();
-  const results = [];
-
-  for (const recipe of recipes) {
-    if (!recipe.id) continue;
-    const cost = await calculateRecipeCost(recipe.id);
-    if (!cost) continue;
-
-    results.push({
-      id: recipe.id,
-      name: recipe.name,
-      margin: cost.margin_per_piece,
-      price: cost.suggested_price,
-      cost: cost.total_cost_per_piece,
-    });
-  }
-
-  return results.sort((a, b) => b.margin - a.margin); // highest margin first
+  const margins = await getAllMarginsNew();
+  return margins.map((m) => ({
+    id: m.id,
+    name: m.name,
+    margin: m.marginPerPiece,
+    price: m.suggestedPrice,
+    cost: m.costPerPiece,
+  }));
 }

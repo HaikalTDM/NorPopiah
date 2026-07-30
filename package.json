@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:calc": "npx tsx src/lib/calculations/__tests__/verify.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",
