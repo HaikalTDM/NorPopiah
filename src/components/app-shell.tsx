@@ -160,7 +160,7 @@ export function AppShell() {
         position="bottom-center"
         toastOptions={{
           className: "card",
-          style: { color: "var(--foreground)" },
+          style: { color: "var(--color-foreground)" },
         }}
       />
 
