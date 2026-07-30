@@ -95,7 +95,7 @@ export function AppShell() {
             </button>
             <button
               onClick={handleInstallLater}
-              className="flex-1 rounded-lg bg-muted/30 px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/50 active:scale-[0.98]"
+              className="flex-1 rounded-lg bg-muted px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted active:scale-[0.98]"
             >
               Later
             </button>

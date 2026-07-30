@@ -114,7 +114,7 @@ export function BatchScalerTab() {
                   <Badge
                     key={n}
                     variant="outline"
-                    className={`cursor-pointer border-border px-2.5 py-1 text-xs transition-colors hover:bg-white/10 ${
+                    className={`cursor-pointer border-border px-2.5 py-1 text-xs transition-colors hover:bg-muted ${
                       targetPieces === n
                         ? "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300"
                         : "text-muted-foreground"
