@@ -31,11 +31,19 @@ import { toast } from "sonner";
 
 const UNITS = ["kg", "g", "l", "ml", "pcs"] as const;
 
-const emptyIngredient: Omit<Ingredient, "id" | "updated_at"> = {
+type MaterialForm = {
+  name: string;
+  unit: string;
+  purchase_qty: string;
+  purchase_price: string;
+  supplier: string;
+};
+
+const emptyMaterialForm: MaterialForm = {
   name: "",
   unit: "kg",
-  purchase_qty: 1,
-  purchase_price: 0,
+  purchase_qty: "1",
+  purchase_price: "",
   supplier: "",
 };
 
@@ -46,7 +54,7 @@ export function MaterialsTab() {
   const [search, setSearch] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Ingredient | null>(null);
-  const [form, setForm] = useState({ ...emptyIngredient });
+  const [form, setForm] = useState({ ...emptyMaterialForm });
 
   const filtered = (ingredients ?? []).filter((i) =>
     i.name.toLowerCase().includes(search.toLowerCase()),
@@ -54,7 +62,7 @@ export function MaterialsTab() {
 
   const openAdd = () => {
     setEditing(null);
-    setForm({ ...emptyIngredient });
+    setForm({ ...emptyMaterialForm });
     setDialogOpen(true);
   };
 
@@ -63,8 +71,8 @@ export function MaterialsTab() {
     setForm({
       name: ingredient.name,
       unit: ingredient.unit,
-      purchase_qty: ingredient.purchase_qty,
-      purchase_price: ingredient.purchase_price,
+      purchase_qty: String(ingredient.purchase_qty),
+      purchase_price: String(ingredient.purchase_price),
       supplier: ingredient.supplier ?? "",
     });
     setDialogOpen(true);
@@ -77,7 +85,11 @@ export function MaterialsTab() {
     }
 
     const data = {
-      ...form,
+      name: form.name,
+      unit: form.unit as Ingredient["unit"],
+      purchase_qty: parseFloat(form.purchase_qty) || 0,
+      purchase_price: parseFloat(form.purchase_price) || 0,
+      supplier: form.supplier,
       updated_at: new Date().toISOString(),
     };
 
@@ -244,13 +256,10 @@ export function MaterialsTab() {
                 <Input
                   type="text"
                   inputMode="decimal"
-                  value={form.purchase_qty || ""}
+                  value={form.purchase_qty}
                   onChange={(e) => {
                     const raw = e.target.value.replace(/[^0-9.]/g, "");
-                    setForm({
-                      ...form,
-                      purchase_qty: raw === "" ? 0 : parseFloat(raw) || 0,
-                    });
+                    setForm({ ...form, purchase_qty: raw });
                   }}
                   className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
                 />
@@ -261,13 +270,10 @@ export function MaterialsTab() {
               <Input
                 type="text"
                 inputMode="decimal"
-                value={form.purchase_price || ""}
+                value={form.purchase_price}
                 onChange={(e) => {
                   const raw = e.target.value.replace(/[^0-9.]/g, "");
-                  setForm({
-                    ...form,
-                    purchase_price: raw === "" ? 0 : parseFloat(raw) || 0,
-                  });
+                  setForm({ ...form, purchase_price: raw });
                 }}
                 className="border-border bg-muted/30 dark:bg-white/5 text-foreground"
               />
