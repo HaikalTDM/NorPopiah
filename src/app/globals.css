@@ -17,6 +17,8 @@
   --muted-foreground: #64748b;
   --accent: #ecfdf5;
   --accent-foreground: #047857;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
   color-scheme: light;
 }
 
@@ -33,6 +35,8 @@
   --muted-foreground: #94a3b8;
   --accent: rgba(16, 185, 129, 0.1);
   --accent-foreground: #6ee7b7;
+  --popover: #0f172a;
+  --popover-foreground: #f1f5f9;
   color-scheme: dark;
 }
 
