@@ -182,7 +182,7 @@ export function MaterialsTab() {
             className="border-border bg-muted dark:bg-input pl-9 text-foreground placeholder:text-muted-foreground/60"
           />
         </div>
-        <Button onClick={openAdd} size="icon" className="shrink-0 bg-emerald-600 hover:bg-emerald-700">
+        <Button onClick={openAdd} size="icon" className="shrink-0 bg-blue-600 hover:bg-blue-700">
           <Plus className="size-4" />
         </Button>
         <Button
@@ -222,7 +222,7 @@ export function MaterialsTab() {
                     </p>
                     <Badge
                       variant="outline"
-                      className="shrink-0 border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
+                      className="shrink-0 border-blue-500/30 text-blue-600 dark:text-blue-400"
                     >
                       {ingredient.unit}
                     </Badge>
@@ -237,7 +237,7 @@ export function MaterialsTab() {
                       {formatCurrency(ingredient.purchase_price)} /{" "}
                       {ingredient.purchase_qty} {ingredient.unit}
                     </span>
-                    <span className="text-emerald-600 dark:text-emerald-400">
+                    <span className="text-blue-600 dark:text-blue-400">
                       {formatCurrency(getCostPerUnit(ingredient))}/{ingredient.unit}
                     </span>
                   </div>
@@ -362,7 +362,7 @@ export function MaterialsTab() {
             </div>
             <Button
               onClick={handleSave}
-              className="w-full bg-emerald-600 hover:bg-emerald-700"
+              className="w-full bg-blue-600 hover:bg-blue-700"
             >
               {editing ? "Update" : "Add"} Ingredient
             </Button>
@@ -391,7 +391,7 @@ export function MaterialsTab() {
             <Button
               onClick={handleParse}
               disabled={!importText.trim()}
-              className="w-full bg-indigo-600 hover:bg-indigo-700"
+              className="w-full bg-blue-600 hover:bg-blue-700"
             >
               Parse Note
             </Button>
@@ -439,7 +439,7 @@ export function MaterialsTab() {
                 )}
                 <Button
                   onClick={handleImportAll}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700"
+                  className="w-full bg-blue-600 hover:bg-blue-700"
                 >
                   Import {parsedItems.length} Ingredient{parsedItems.length > 1 ? "s" : ""}
                 </Button>

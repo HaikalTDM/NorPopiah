@@ -207,7 +207,7 @@ export function RecipesTab() {
         <Button
           onClick={openAdd}
           size="sm"
-          className="bg-emerald-600 hover:bg-emerald-700"
+          className="bg-blue-600 hover:bg-blue-700"
         >
           <Plus className="mr-1 size-3.5" />
           New Recipe
@@ -250,7 +250,7 @@ export function RecipesTab() {
                     </div>
                     <div className="flex items-center gap-2">
                       {cost && !isExpanded && (
-                        <Badge className="bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                        <Badge className="bg-blue-500/20 text-blue-600 dark:text-blue-400">
                           {formatCurrency(cost.suggested_price)}/pc
                         </Badge>
                       )}
@@ -335,11 +335,11 @@ export function RecipesTab() {
                           {formatCurrency(cost.total_cost_per_piece)}/pc
                         </span>
                       </div>
-                      <div className="flex justify-between font-semibold text-emerald-600 dark:text-emerald-400">
+                      <div className="flex justify-between font-semibold text-blue-600 dark:text-blue-400">
                         <span>{recipe.selling_price_per_piece > 0 ? "Selling Price" : "Suggested Price"}</span>
                         <span>{formatCurrency(cost.suggested_price)}/pc</span>
                       </div>
-                      <div className="flex justify-between text-indigo-600 dark:text-indigo-400">
+                      <div className="flex justify-between text-blue-600 dark:text-blue-400">
                         <span>Margin{recipe.selling_price_per_piece > 0 ? " (calculated)" : ""}</span>
                         <span>
                           {formatCurrency(cost.margin_per_piece)}/pc (
@@ -476,7 +476,7 @@ export function RecipesTab() {
                       target_margin_percent: parseInt(e.target.value) || 0,
                     })
                   }
-                  className="accent-emerald-500"
+                  className="accent-blue-500"
                 />
                 <p className="mt-1 text-[11px] text-muted-foreground">
                   Used to suggest a price. Ignored if you set a selling price below.
@@ -506,7 +506,7 @@ export function RecipesTab() {
               </div>
               <Button
                 onClick={() => setStep(2)}
-                className="w-full bg-indigo-600 hover:bg-indigo-700"
+                className="w-full bg-blue-600 hover:bg-blue-700"
               >
                 Next: Add Ingredients ({recipeItems.length} selected)
               </Button>
@@ -591,7 +591,7 @@ export function RecipesTab() {
                 </Button>
                 <Button
                   onClick={handleSave}
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700"
                 >
                   {editing ? "Update" : "Create"} Recipe
                 </Button>

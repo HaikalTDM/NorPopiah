@@ -116,7 +116,7 @@ export function BatchScalerTab() {
                     variant="outline"
                     className={`cursor-pointer border-border px-2.5 py-1 text-xs transition-colors hover:bg-muted ${
                       targetPieces === n
-                        ? "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300"
+                        ? "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-300"
                         : "text-muted-foreground"
                     }`}
                     onClick={() => {
@@ -131,7 +131,7 @@ export function BatchScalerTab() {
 
               <Button
                 onClick={handleCalculate}
-                className="w-full bg-indigo-600 hover:bg-indigo-700"
+                className="w-full bg-blue-600 hover:bg-blue-700"
               >
                 <Calculator className="mr-1.5 size-4" />
                 Calculate
@@ -143,7 +143,7 @@ export function BatchScalerTab() {
 
       {/* Results */}
       {result && (
-        <Card className="border-emerald-100 bg-muted dark:border-emerald-500/20 dark:bg-input">
+        <Card className="border-blue-100 bg-muted dark:border-blue-500/20 dark:bg-input">
           <CardContent className="space-y-3 p-4">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Scale className="size-4" />
@@ -162,19 +162,19 @@ export function BatchScalerTab() {
               </div>
               <div className="rounded-lg border border-border bg-muted p-3 dark:bg-input">
                 <p className="text-xs text-muted-foreground">Price / piece</p>
-                <p className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">
+                <p className="text-lg font-semibold text-blue-600 dark:text-blue-400">
                   {formatCurrency(result.pricePerPiece)}
                 </p>
               </div>
-              <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-3 dark:border-emerald-500/20 dark:bg-emerald-500/5">
+              <div className="rounded-lg border border-blue-100 bg-blue-50 p-3 dark:border-blue-500/20 dark:bg-blue-500/5">
                 <p className="text-xs text-muted-foreground">Total Revenue</p>
-                <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
+                <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
                   {formatCurrency(result.totalRevenue)}
                 </p>
               </div>
-              <div className="rounded-lg border border-indigo-100 bg-indigo-50 p-3 dark:border-indigo-500/20 dark:bg-indigo-500/5">
+              <div className="rounded-lg border border-blue-100 bg-blue-50 p-3 dark:border-blue-500/20 dark:bg-blue-500/5">
                 <p className="text-xs text-muted-foreground">Total Profit</p>
-                <p className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
                   {formatCurrency(result.totalProfit)}
                 </p>
               </div>

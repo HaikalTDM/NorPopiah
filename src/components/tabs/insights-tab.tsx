@@ -50,11 +50,11 @@ export function InsightsTab() {
     <div className="space-y-4">
       {/* Summary cards */}
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
-        <Card className="border-emerald-100 bg-emerald-50 dark:border-emerald-500/20 dark:bg-emerald-500/5">
+        <Card className="border-blue-100 bg-blue-50 dark:border-blue-500/20 dark:bg-blue-500/5">
           <CardContent className="p-3 text-center">
-            <TrendingUp className="mx-auto mb-1 size-4 text-emerald-600 dark:text-emerald-400" />
+            <TrendingUp className="mx-auto mb-1 size-4 text-blue-600 dark:text-blue-400" />
             <p className="text-xs text-muted-foreground">Highest Margin</p>
-            <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+            <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">
               {formatCurrency(highestMargin?.margin ?? 0)}
             </p>
           </CardContent>
@@ -120,7 +120,7 @@ export function InsightsTab() {
                 <Badge
                   className={
                     item.margin > avgMargin
-                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400"
+                      ? "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400"
                       : "bg-muted text-muted-foreground"
                   }
                 >

@@ -51,7 +51,7 @@ function getPages(): GuidePage[] {
               "Everything works offline — your data stays on your device",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <span className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400">✓</span>
+                <span className="mt-0.5 shrink-0 text-blue-600 dark:text-blue-400">✓</span>
                 <span>{item}</span>
               </li>
             ))}
@@ -76,8 +76,8 @@ function getPages(): GuidePage[] {
               <li>• Supplier <span className="text-muted-foreground/50">(optional)</span></li>
             </ul>
           </div>
-          <div className="rounded-lg bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-100 dark:border-emerald-500/10 p-3">
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mb-1">
+          <div className="rounded-lg bg-blue-50 dark:bg-blue-500/5 border border-blue-100 dark:border-blue-500/10 p-3">
+            <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">
               Example
             </p>
             <p className="text-xs text-foreground/85">
@@ -85,7 +85,7 @@ function getPages(): GuidePage[] {
               &nbsp;→&nbsp;
               <span className="font-medium text-foreground">RM 75</span>
             </p>
-            <p className="text-xs text-emerald-600 dark:text-emerald-300 mt-1">
+            <p className="text-xs text-blue-600 dark:text-blue-300 mt-1">
               ↓ Cost per gram is calculated automatically
             </p>
           </div>
@@ -107,8 +107,8 @@ function getPages(): GuidePage[] {
             <li>• Labour &amp; utility buffer</li>
             <li>• Target profit margin %</li>
           </ul>
-          <div className="rounded-lg bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-100 dark:border-emerald-500/10 p-3">
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mb-1">
+          <div className="rounded-lg bg-blue-50 dark:bg-blue-500/5 border border-blue-100 dark:border-blue-500/10 p-3">
+            <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">
               Auto-calculated:
             </p>
             <ul className="space-y-0.5 text-xs text-foreground/85">
@@ -143,7 +143,7 @@ function getPages(): GuidePage[] {
               </div>
               <div>
                 <p className="text-muted-foreground/70">Customer order</p>
-                <p className="text-emerald-600 dark:text-emerald-400 font-medium text-lg">
+                <p className="text-blue-600 dark:text-blue-400 font-medium text-lg">
                   75
                 </p>
                 <p className="text-muted-foreground">brownies</p>
@@ -176,7 +176,7 @@ function getPages(): GuidePage[] {
               "Overall profitability snapshot",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <span className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400">•</span>
+                <span className="mt-0.5 shrink-0 text-blue-600 dark:text-blue-400">•</span>
                 <span>{item}</span>
               </li>
             ))}
@@ -235,7 +235,7 @@ function getPages(): GuidePage[] {
           <p className="text-foreground font-medium">
             Recommended workflow:
           </p>
-          <ol className="space-y-2 text-xs text-muted-foreground list-decimal list-inside marker:text-emerald-600 dark:marker:text-emerald-400">
+          <ol className="space-y-2 text-xs text-muted-foreground list-decimal list-inside marker:text-blue-600 dark:marker:text-blue-400">
             <li>
               Add your ingredients in{" "}
               <span className="text-foreground/85">Materials</span>
@@ -251,7 +251,7 @@ function getPages(): GuidePage[] {
               regularly to maximize profitability
             </li>
           </ol>
-          <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+          <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">
             Revisit this guide anytime by tapping the 📖 icon in the header.
           </p>
         </div>
@@ -323,11 +323,11 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
         <div className="flex flex-col" style={{ minHeight: 420 }}>
           <div className="flex-1 px-6 pt-6 pb-4">
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent ring-1 ring-emerald-500/20">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent ring-1 ring-blue-500/20">
                 {page.emoji ? (
                   <span className="text-xl">{page.emoji}</span>
                 ) : (
-                  <PageIcon className="size-5 text-emerald-600 dark:text-emerald-400" />
+                  <PageIcon className="size-5 text-blue-600 dark:text-blue-400" />
                 )}
               </div>
               <div>
@@ -359,9 +359,9 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
                   key={i}
                   className={`h-1 rounded-full transition-all duration-300 ${
                     i === currentPage
-                      ? "w-5 bg-emerald-500"
+                      ? "w-5 bg-blue-500"
                       : i < currentPage
-                        ? "w-1.5 bg-emerald-500/40"
+                        ? "w-1.5 bg-blue-500/40"
                         : "w-1.5 bg-muted"
                   }`}
                 />
@@ -393,7 +393,7 @@ export function UserGuide({ open, onOpenChange }: UserGuideProps) {
               {isLastPage ? (
                 <button
                   onClick={handleFinish}
-                  className="flex items-center gap-1 rounded-lg bg-emerald-100 px-4 py-2 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-200 active:scale-[0.98] dark:bg-emerald-500/20 dark:text-emerald-300 dark:hover:bg-emerald-500/30"
+                  className="flex items-center gap-1 rounded-lg bg-blue-100 px-4 py-2 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-200 active:scale-[0.98] dark:bg-blue-500/20 dark:text-blue-300 dark:hover:bg-blue-500/30"
                 >
                   <Sparkles className="size-3.5" />
                   Start Using App

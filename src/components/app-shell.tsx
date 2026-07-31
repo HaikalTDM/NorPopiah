@@ -89,7 +89,7 @@ export function AppShell() {
           <div className="mt-3 flex items-center gap-2">
             <button
               onClick={handleInstallClick}
-              className="flex-1 rounded-lg bg-emerald-500/20 px-3 py-2 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/30 active:scale-[0.98]"
+              className="flex-1 rounded-lg bg-blue-500/20 px-3 py-2 text-xs font-medium text-blue-400 transition-colors hover:bg-blue-500/30 active:scale-[0.98]"
             >
               Install
             </button>
