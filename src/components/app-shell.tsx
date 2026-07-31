@@ -6,6 +6,7 @@ import {
   ChefHat,
   Scale,
   BarChart3,
+  ShoppingCart,
   Download,
   Upload,
   BookOpen,
@@ -19,6 +20,7 @@ import { MaterialsTab } from "./tabs/materials-tab";
 import { RecipesTab } from "./tabs/recipes-tab";
 import { BatchScalerTab } from "./tabs/batch-scaler-tab";
 import { InsightsTab } from "./tabs/insights-tab";
+import { ShoppingListTab } from "./tabs/shopping-list-tab";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { exportDatabase, importDatabase } from "@/lib/backup";
@@ -28,6 +30,7 @@ const TABS = [
   { id: "materials", label: "Materials", icon: Package },
   { id: "recipes", label: "Recipes", icon: ChefHat },
   { id: "scaler", label: "Batch Scaler", icon: Scale },
+  { id: "shopping", label: "Shopping List", icon: ShoppingCart },
   { id: "insights", label: "Insights", icon: BarChart3 },
 ];
 
@@ -223,7 +226,7 @@ export function AppShell() {
         onValueChange={setActiveTab}
         className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8"
       >
-        <TabsList className="grid w-full grid-cols-4 bg-muted">
+        <TabsList className="grid w-full grid-cols-5 bg-muted">
           {TABS.map((tab) => (
             <TabsTrigger
               key={tab.id}
@@ -248,6 +251,9 @@ export function AppShell() {
           </TabsContent>
           <TabsContent value="insights">
             <InsightsTab />
+          </TabsContent>
+          <TabsContent value="shopping">
+            <ShoppingListTab />
           </TabsContent>
         </div>
       </Tabs>
