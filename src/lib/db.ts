@@ -33,10 +33,37 @@ export interface RecipeItem {
   qty_used: number;
 }
 
+export interface ProductionBatch {
+  id?: number;
+  recipe_id: number;
+  recipe_name: string;
+  pieces_produced: number;
+  batch_date: string;
+  actual_cost_per_piece: number;
+  actual_price_per_piece: number;
+  actual_total_cost: number;
+  actual_total_revenue: number;
+  actual_profit: number;
+  notes: string;
+  created_at: string;
+}
+
+export interface ProductionBatchItem {
+  id?: number;
+  batch_id: number;
+  ingredient_id: number;
+  ingredient_name: string;
+  qty_used: number;
+  unit: string;
+  actual_cost: number;
+}
+
 class CostDatabase extends Dexie {
   ingredients!: Table<Ingredient>;
   recipes!: Table<Recipe>;
   recipe_items!: Table<RecipeItem>;
+  production_batches!: Table<ProductionBatch>;
+  production_batch_items!: Table<ProductionBatchItem>;
 
   constructor() {
     super("CostCalculatorDB");
@@ -55,6 +82,13 @@ class CostDatabase extends Dexie {
           ingredient.category = "ingredient";
         }
       });
+    });
+    this.version(3).stores({
+      ingredients: "++id, name, category, updated_at",
+      recipes: "++id, name",
+      recipe_items: "++id, recipe_id, ingredient_id",
+      production_batches: "++id, recipe_id, batch_date",
+      production_batch_items: "++id, batch_id, ingredient_id",
     });
   }
 }
