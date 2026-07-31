@@ -13,6 +13,7 @@ import {
   BookOpen,
   Sun,
   Moon,
+  Calculator,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ import { BatchScalerTab } from "./tabs/batch-scaler-tab";
 import { InsightsTab } from "./tabs/insights-tab";
 import { ShoppingListTab } from "./tabs/shopping-list-tab";
 import { ProductionTab } from "./tabs/production-tab";
+import { QuickCalculator } from "./quick-calculator";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { exportDatabase, importDatabase } from "@/lib/backup";
@@ -35,6 +37,7 @@ const TABS = [
   { id: "production", label: "Production", icon: Factory },
   { id: "shopping", label: "Shopping List", icon: ShoppingCart },
   { id: "insights", label: "Insights", icon: BarChart3 },
+  { id: "calculator", label: "Quick Calc", icon: Calculator },
 ];
 
 const INSTALL_TOAST_DELAY = 2500;
@@ -229,7 +232,7 @@ export function AppShell() {
         onValueChange={setActiveTab}
         className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8"
       >
-        <TabsList className="grid w-full grid-cols-6 bg-muted">
+        <TabsList className="grid w-full grid-cols-7 bg-muted">
           {TABS.map((tab) => (
             <TabsTrigger
               key={tab.id}
@@ -260,6 +263,9 @@ export function AppShell() {
           </TabsContent>
           <TabsContent value="shopping">
             <ShoppingListTab />
+          </TabsContent>
+          <TabsContent value="calculator">
+            <QuickCalculator />
           </TabsContent>
         </div>
       </Tabs>
