@@ -22,6 +22,7 @@ export interface Recipe {
   labor_buffer: number; // your time/effort per batch
   target_margin_percent: number; // e.g. 60 (%) — used only when selling_price_per_piece is 0
   selling_price_per_piece: number; // 0 = use margin slider; >0 = use this price, calculate margin
+  instructions: string; // step-by-step preparation instructions
   created_at: string;
 }
 

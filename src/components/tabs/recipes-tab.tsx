@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
 const formatCurrency = (n: number) =>
@@ -40,6 +41,7 @@ interface RecipeForm {
   labor_buffer: number;
   target_margin_percent: number;
   selling_price_per_piece: number;
+  instructions: string;
 }
 
 const emptyForm: RecipeForm = {
@@ -50,6 +52,7 @@ const emptyForm: RecipeForm = {
   labor_buffer: 5,
   target_margin_percent: 60,
   selling_price_per_piece: 0,
+  instructions: "",
 };
 
 export function RecipesTab() {
@@ -108,6 +111,7 @@ export function RecipesTab() {
       labor_buffer: recipe.labor_buffer,
       target_margin_percent: recipe.target_margin_percent,
       selling_price_per_piece: recipe.selling_price_per_piece ?? 0,
+      instructions: recipe.instructions ?? "",
     });
 
     if (recipe.id) {
@@ -346,6 +350,14 @@ export function RecipesTab() {
                           {cost.margin_percent.toFixed(1)}%)
                         </span>
                       </div>
+                      {recipe.instructions && (
+                        <div className="border-t border-border pt-2 mt-2">
+                          <p className="text-xs font-medium text-muted-foreground mb-1">Instructions</p>
+                          <p className="text-sm text-foreground/80 whitespace-pre-wrap">
+                            {recipe.instructions}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -502,6 +514,21 @@ export function RecipesTab() {
                 />
                 <p className="mt-1 text-[11px] text-muted-foreground">
                   Set your actual selling price. Margin % auto-calculates from this. Leave 0 to use the slider above.
+                </p>
+              </div>
+              <div>
+                <Label className="text-foreground/85">
+                  Instructions <span className="text-muted-foreground font-normal">— optional</span>
+                </Label>
+                <Textarea
+                  value={form.instructions}
+                  onChange={(e) => setForm({ ...form, instructions: e.target.value })}
+                  placeholder={"1. Mix cream cheese with mayo...\n2. Wrap with popiah skin...\n3. Vacuum seal and label..."}
+                  rows={4}
+                  className="border-border bg-muted dark:bg-input text-foreground resize-y min-h-[80px]"
+                />
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  Step-by-step prep instructions. Shown when expanding a recipe.
                 </p>
               </div>
               <Button
